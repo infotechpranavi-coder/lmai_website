@@ -1,179 +1,191 @@
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Download, Calendar } from 'lucide-react';
+"use client";
 
-export const metadata = {
-  title: 'Newsletters | Intuitive Method Association',
-  description: 'Access our newsletters covering industry insights and association updates',
-};
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { FileText, Download, Calendar, Mail, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Newsletters() {
+  const newsletters = [
+    {
+      title: "LMAI Monthly Digest - March 2024",
+      date: "March 1, 2024",
+      description: "Covering the annual conference highlights, technical innovations in label manufacturing, and upcoming member initiatives.",
+      fileSize: "2.4 MB",
+      category: "Monthly Digest"
+    },
+    {
+      title: "Label Awards Special Edition 2023",
+      date: "January 15, 2024",
+      description: "A comprehensive look at the winners and groundbreaking submissions from the 2023 Label Awards & Competition.",
+      fileSize: "4.8 MB",
+      category: "Special Edition"
+    },
+    {
+      title: "Quarterly Technical Report Q4",
+      date: "December 20, 2023",
+      description: "Detailed analysis of global supply chain trends and their impact on the Indian label printing industry.",
+      fileSize: "3.1 MB",
+      category: "Technical Report"
+    },
+    {
+      title: "LMAI Monthly Digest - November 2023",
+      date: "November 1, 2023",
+      description: "Updates on the FINAT collaboration summit and sustainable packaging forum insights.",
+      fileSize: "2.2 MB",
+      category: "Monthly Digest"
+    },
+    {
+      title: "Secretariat Update: Export Regulations",
+      date: "September 12, 2023",
+      description: "Crucial updates regarding international quality standards and export regulations for Indian label manufacturers.",
+      fileSize: "1.8 MB",
+      category: "Policy Update"
+    },
+    {
+      title: "Technical Workshop Summary: UV Curing",
+      date: "August 5, 2023",
+      description: "Key takeaways and technical documentation from our recent hand-on workshop on UV curing technologies.",
+      fileSize: "5.2 MB",
+      category: "Workshop Summary"
+    }
+  ];
+
   return (
-    <div className="w-full">
-      {/* Page Header */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Newsletters</h1>
-          <p className="text-lg md:text-xl text-balance">Stay informed with our latest industry insights and association updates</p>
+    <div className="w-full bg-background selection:bg-primary selection:text-white">
+
+      {/* ──────────────────────────────────────────────────────────
+          HERO SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section className="relative h-[400px] md:h-[500px] w-full overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=1600&q=80"
+          alt="LMAI Newsletters"
+          fill
+          priority
+          className="object-cover brightness-[0.4]"
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <div className="flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-[0.4em] mb-4">
+            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/ /</span>
+            <span className="text-white">Newsletters</span>
+          </div>
+          <h1 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+            Digital <span className="text-primary italic">Archives</span>
+          </h1>
+          <div className="w-24 h-1.5 bg-primary mt-8 rounded-full" />
         </div>
       </section>
 
-      {/* Newsletter Archive */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-secondary/20">
+      {/* ──────────────────────────────────────────────────────────
+          MAIN CONTENT - CLEAN DOCUMENT LIST
+      ────────────────────────────────────────────────────────── */}
+      <section className="py-32 px-4 sm:px-6 lg:px-24 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12">Latest Issues</h2>
-          <div className="space-y-6">
-            {[
-              {
-                title: 'Monthly Digest - February 2024',
-                date: 'February 28, 2024',
-                topics: ['Industry Trends', 'Event Updates', 'Member Spotlight'],
-                description: 'Catch up on the latest developments in our industry and exclusive association news',
-              },
-              {
-                title: 'Monthly Digest - January 2024',
-                date: 'January 31, 2024',
-                topics: ['New Year Initiatives', 'Member Benefits', 'Conference Highlights'],
-                description: 'A fresh start with the latest insights and opportunities from our association',
-              },
-              {
-                title: 'Holiday Special Edition',
-                date: 'December 20, 2023',
-                topics: ['Year in Review', 'Member Achievements', 'Upcoming Events'],
-                description: 'Celebrating our year of accomplishments and looking ahead to 2024',
-              },
-              {
-                title: 'Monthly Digest - November 2023',
-                date: 'November 30, 2023',
-                topics: ['Innovation Report', 'Leadership Insights', 'Networking Opportunities'],
-                description: 'Exploring the latest innovations shaping our professional landscape',
-              },
-              {
-                title: 'Monthly Digest - October 2023',
-                date: 'October 31, 2023',
-                topics: ['Award Winners', 'Event Recap', 'Expert Interviews'],
-                description: 'Recognizing excellence and celebrating our community achievements',
-              },
-              {
-                title: 'Fall Conference Special',
-                date: 'October 15, 2023',
-                topics: ['Conference Agenda', 'Speaker Profiles', 'Registration Info'],
-                description: 'Your guide to our annual fall conference and networking events',
-              },
-            ].map((newsletter, idx) => (
-              <Card key={idx} className="p-8 hover:shadow-lg transition-shadow">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                  <div className="lg:col-span-2">
-                    <h3 className="text-2xl font-bold mb-2">{newsletter.title}</h3>
-                    <div className="flex items-center gap-2 text-sm text-foreground/70 mb-4">
-                      <Calendar className="w-4 h-4" />
-                      {newsletter.date}
-                    </div>
-                    <p className="text-foreground/80 mb-4">{newsletter.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {newsletter.topics.map((topic, topicIdx) => (
-                        <span key={topicIdx} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs">
-                          {topic}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-3">
-                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full w-full flex items-center justify-center gap-2">
-                      <Download className="w-4 h-4" />
-                      Download PDF
-                    </Button>
-                    <Button variant="outline" className="rounded-full w-full">
-                      Read Online
-                    </Button>
-                  </div>
+          <div className="mb-24 space-y-4">
+            <span className="text-primary text-xs font-black uppercase tracking-widest block">Resource Center</span>
+            <h2 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-tighter leading-none">
+              Official <span className="text-primary italic">Publications</span>
+            </h2>
+            <p className="text-lg text-foreground/50 font-bold max-w-2xl mt-8 border-l-4 border-primary pl-6 py-2">
+              Access our complete library of technical reports, monthly digests, and special edition publications. Available for direct PDF download.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+            {newsletters.map((item, idx) => (
+              <div key={idx} className="group relative flex flex-col sm:flex-row gap-8 items-start p-2 hover:bg-secondary/10 rounded-3xl transition-colors duration-500">
+                {/* Visual Placeholder for Document */}
+                <div className="relative w-full sm:w-48 aspect-[3/4] shrink-0 overflow-hidden rounded-2xl bg-[#0a0a0b] flex flex-col items-center justify-center group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] transition-all duration-500">
+                  <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
+                  <FileText className="w-16 h-16 text-white/20 group-hover:text-primary transition-colors duration-500" />
+                  <div className="absolute bottom-4 text-white/40 text-[10px] font-black uppercase tracking-widest">PDF DOCUMENT</div>
+
+                  {/* Abstract Visual Lines */}
+                  <div className="absolute top-20 left-6 right-6 h-1 bg-white/5" />
+                  <div className="absolute top-24 left-6 right-12 h-1 bg-white/5" />
+                  <div className="absolute top-28 left-6 right-8 h-1 bg-white/5" />
                 </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Newsletter Categories */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12">Newsletter Types</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Monthly Digest',
-                frequency: 'Monthly',
-                description: 'Comprehensive overview of industry trends, association updates, and member spotlights',
-              },
-              {
-                name: 'Weekly Brief',
-                frequency: 'Weekly',
-                description: 'Quick insights on upcoming events, job opportunities, and latest news',
-              },
-              {
-                name: 'Special Editions',
-                frequency: 'As Needed',
-                description: 'Exclusive content covering conferences, awards, and special initiatives',
-              },
-            ].map((newsType, idx) => (
-              <Card key={idx} className="p-8 text-center hover:shadow-lg transition-shadow">
-                <h3 className="text-xl font-bold mb-2">{newsType.name}</h3>
-                <p className="text-primary font-semibold mb-4">{newsType.frequency}</p>
-                <p className="text-foreground/70">{newsType.description}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+                <div className="flex-1 flex flex-col h-full justify-between py-2">
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] font-black uppercase tracking-widest bg-primary/10 text-primary px-3 py-1 rounded-full">
+                        {item.category}
+                      </span>
+                      <span className="text-[10px] font-bold text-foreground/30 flex items-center gap-1">
+                        <Calendar className="w-3 h-3" /> {item.date}
+                      </span>
+                    </div>
+                    <h3 className="text-2xl font-black uppercase tracking-tighter leading-tight group-hover:text-primary transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm font-medium text-foreground/50 line-clamp-2 leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
 
-      {/* Subscribe Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-secondary/20">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">Subscribe to Our Newsletters</h2>
-          <p className="text-lg text-foreground/70 text-center mb-8">
-            Choose which newsletters you'd like to receive and stay informed about what matters to you
-          </p>
-          <Card className="p-8">
-            <form className="space-y-6">
-              <div>
-                <label className="block font-semibold mb-4">Select Newsletters</label>
-                <div className="space-y-3">
-                  {['Monthly Digest', 'Weekly Brief', 'Special Editions'].map((type) => (
-                    <label key={type} className="flex items-center gap-3 cursor-pointer">
-                      <input type="checkbox" className="w-4 h-4" defaultChecked />
-                      <span>{type}</span>
-                    </label>
-                  ))}
+                  <div className="pt-8 flex items-center gap-6">
+                    <Button className="rounded-full bg-[#0a0a0b] hover:bg-primary text-white font-black uppercase text-[10px] tracking-[0.2em] h-12 px-8 flex items-center gap-2 transition-all duration-500 group-hover:translate-x-1 shadow-lg shadow-black/10">
+                      <Download className="w-3 h-3" /> Download PDF
+                    </Button>
+                    <span className="text-[10px] font-black text-foreground/30 uppercase tracking-widest">
+                      {item.fileSize}
+                    </span>
+                  </div>
                 </div>
               </div>
-              <div>
-                <label className="block font-semibold mb-2">Email Address</label>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ──────────────────────────────────────────────────────────
+          INSTITUTIONAL FOOTER / CTA
+      ────────────────────────────────────────────────────────── */}
+      <section className="py-24 px-4 sm:px-6 lg:px-24 bg-[#0a0a0b] text-white">
+        <div className="max-w-7xl mx-auto rounded-[3rem] bg-primary p-12 md:p-24 overflow-hidden relative group">
+          {/* Abstract Background Decoration */}
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full blur-[100px] group-hover:scale-150 transition-transform duration-1000" />
+          <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-black/20 rounded-full blur-[80px]" />
+
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center text-left">
+            <div className="space-y-8">
+              <div className="flex items-center gap-3">
+                <Mail className="w-10 h-10" />
+                <span className="text-[10px] font-black uppercase tracking-[0.4em]">Secretariat Updates</span>
+              </div>
+              <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-[0.85]">
+                JOIN THE <br /> <span className="italic text-black">NETWORK.</span>
+              </h2>
+              <p className="text-lg font-bold text-white/70 max-w-md">
+                Subscribe to receive our latest newsletters and technical briefs directly in your inbox as soon as they are published.
+              </p>
+            </div>
+
+            <div className="space-y-8">
+              <div className="flex flex-col gap-4">
                 <input
                   type="email"
-                  placeholder="your@email.com"
-                  className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                  placeholder="ENTER YOUR CORPORATE EMAIL"
+                  className="bg-white/10 border border-white/20 rounded-full h-16 px-10 text-white placeholder:text-white/40 font-black text-[10px] tracking-[0.3em] outline-none focus:ring-2 focus:ring-black/20 transition-all"
                 />
+                <Button className="h-16 rounded-full bg-black text-white hover:bg-white hover:text-black font-black uppercase text-xs tracking-[0.3em] flex items-center justify-between px-10 group/btn transition-all duration-500">
+                  Subscribe Now
+                  <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
+                </Button>
               </div>
-              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg py-6">
-                Subscribe to Newsletters
-              </Button>
-            </form>
-          </Card>
+              <p className="text-[10px] font-black text-white/50 uppercase tracking-widest text-center lg:text-left">
+                * We value your privacy. Unsubscribe at any time.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Manage Preferences */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Manage Your Preferences</h2>
-          <p className="text-lg text-foreground/70 mb-8">
-            Already subscribed? Update your preferences or unsubscribe anytime
-          </p>
-          <Button variant="outline" className="rounded-full px-8 py-6">
-            Update Email Preferences
-          </Button>
-        </div>
-      </section>
     </div>
   );
 }

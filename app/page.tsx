@@ -1,252 +1,424 @@
+import Link from 'next/link';
 import Image from 'next/image';
+import HeroCarousel from '@/components/HeroCarousel';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import HeroCarousel from '@/components/HeroCarousel';
-import { Award, Users, Newspaper, Presentation, ArrowRight, TrendingUp, Zap } from 'lucide-react';
+import {
+  Award,
+  Users,
+  Newspaper,
+  Presentation,
+  ArrowRight,
+  TrendingUp,
+  Zap,
+  Star,
+  Globe,
+  CheckCircle2,
+  ChevronRight,
+  Play,
+} from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="w-full bg-background">
-      {/* Premium Hero Section */}
-      <section className="relative overflow-hidden pt-20 pb-32">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 text-pretty leading-tight">
-              Connect, Grow & Excel
-            </h1>
-            <p className="text-xl md:text-2xl text-foreground/70 mb-8 max-w-3xl mx-auto text-pretty">
-              Join a thriving community of professionals dedicated to innovation, collaboration, and sustainable excellence
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8 py-3 text-lg">
-                Explore Membership <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-              <Button variant="outline" className="rounded-full px-8 py-3 text-lg border-primary text-primary hover:bg-primary/10">
-                Learn More
-              </Button>
-            </div>
-          </div>
+    <div className="w-full bg-background overflow-x-hidden">
 
-          {/* Featured Visual */}
-          <div className="mt-16">
-            <div className="aspect-video bg-gradient-to-br from-primary/10 via-accent/10 to-primary/5 rounded-2xl border border-primary/20 overflow-hidden flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-6xl text-primary/30 mb-4">✨</div>
-                <p className="text-foreground/50">Premium Association Experience</p>
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* ═══════════════════════════════════════════════
+          HERO SECTION — full-width moving banner
+      ═══════════════════════════════════════════════ */}
+      <section className="w-full">
+        <HeroCarousel />
       </section>
 
-      {/* Key Stats Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-16 bg-secondary/10 border-y border-border">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { stat: '1000+', label: 'Active Members' },
-              { stat: '50+', label: 'Annual Events' },
-              { stat: '25+', label: 'Years of Excellence' }
-            ].map((item, idx) => (
-              <div key={idx} className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">{item.stat}</div>
-                <p className="text-foreground/70 text-lg">{item.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Events - Bento Style */}
-      <section className="px-4 sm:px-6 lg:px-8 py-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Featured Events</h2>
-            <p className="text-lg text-foreground/60">Discover our most impactful professional gatherings</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-max">
-            {/* Large Featured Card */}
-            <div className="lg:col-span-2 lg:row-span-2">
-              <Card className="h-full overflow-hidden hover:shadow-xl transition-shadow group cursor-pointer">
-                <div className="relative h-96 bg-gradient-to-br from-primary/20 to-accent/20 overflow-hidden">
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
-                    <Button className="opacity-0 group-hover:opacity-100 transition-opacity bg-white text-primary hover:bg-white/90 rounded-full">
-                      View Details
-                    </Button>
-                  </div>
+      {/* ═══════════════════════════════════════════════
+          KEY STATS — glassy pill band
+      ═══════════════════════════════════════════════ */}
+      <section className="relative py-12">
+        <div className="bg-primary mx-4 sm:mx-8 lg:mx-16 rounded-3xl shadow-xl shadow-primary/30 overflow-hidden">
+          {/* Subtle shine overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-white/10 via-white/5 to-transparent pointer-events-none" />
+          <div className="max-w-7xl mx-auto px-8 sm:px-12 py-12 relative">
+            <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/20 gap-0">
+              {[
+                { stat: '1,000+', label: 'Active Members', icon: Users },
+                { stat: '50+', label: 'Annual Events', icon: Zap },
+                { stat: '25+', label: 'Years of Excellence', icon: Award },
+              ].map(({ stat, label, icon: Icon }, idx) => (
+                <div key={idx} className="flex flex-col items-center justify-center py-4 sm:py-0 sm:px-12 text-center gap-2">
+                  <Icon className="w-8 h-8 text-white/70 mb-1" />
+                  <div className="text-4xl md:text-5xl font-bold text-white">{stat}</div>
+                  <p className="text-primary-foreground/80 text-base font-medium">{label}</p>
                 </div>
-                <div className="p-8">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="px-3 py-1 bg-primary/20 text-primary text-sm font-semibold rounded-full">Featured</span>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3">Annual Conference 2024</h3>
-                  <p className="text-foreground/70 leading-relaxed">Join industry leaders for three days of networking, learning, and innovation</p>
-                </div>
-              </Card>
-            </div>
-
-            {/* Small Cards */}
-            {[1, 2].map((event) => (
-              <Card key={event} className="overflow-hidden hover:shadow-lg transition-shadow group cursor-pointer">
-                <div className="relative h-40 bg-gradient-to-br from-primary/15 to-accent/15 overflow-hidden">
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors" />
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold mb-1">Workshop Series</h3>
-                  <p className="text-sm text-foreground/70">Professional development sessions</p>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Leadership Section - Modern Layout */}
-      <section className="px-4 sm:px-6 lg:px-8 py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Trusted Leadership</h2>
-              <p className="text-lg text-foreground/70 mb-8 leading-relaxed">
-                Our board comprises seasoned professionals with decades of combined expertise in driving innovation and fostering collaboration across industries.
-              </p>
-              <div className="space-y-4 mb-8">
-                {[
-                  'Strategic Vision & Industry Expertise',
-                  'Commitment to Member Success',
-                  'Innovative Program Development'
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-start gap-3">
-                    <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 mt-1">
-                      <div className="w-2 h-2 bg-primary rounded-full" />
-                    </div>
-                    <p className="text-foreground/80 pt-0.5">{item}</p>
-                  </div>
-                ))}
-              </div>
-              <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-8">
-                Meet Our Team <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              {[1, 2, 3, 4].map((member) => (
-                <Card key={member} className="overflow-hidden hover:shadow-lg transition-shadow group cursor-pointer">
-                  <div className="aspect-square bg-gradient-to-br from-primary/20 to-accent/20 relative overflow-hidden">
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                  </div>
-                  <div className="p-4 text-center">
-                    <h3 className="font-bold text-sm mb-1">Member {member}</h3>
-                    <p className="text-xs text-foreground/60">Leadership Role</p>
-                  </div>
-                </Card>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Awards & Recognition */}
-      <section className="px-4 sm:px-6 lg:px-8 py-20">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4">Recognition & Awards</h2>
-            <p className="text-lg text-foreground/60">Celebrating excellence and exceptional achievements</p>
+      {/* ═══════════════════════════════════════════════
+          JOURNEY TRACK — 3 stages of formation
+      ═══════════════════════════════════════════════ */}
+      <section className="px-4 sm:px-6 lg:px-8 py-24 relative overflow-hidden">
+        {/* Light dot-pattern background */}
+        <div
+          className="absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, var(--color-primary) 1.5px, transparent 1.5px)',
+            backgroundSize: '30px 30px',
+          }}
+        />
+
+        <div className="max-w-7xl mx-auto relative">
+          {/* Section header */}
+          <div className="text-center mb-20">
+            <span className="text-primary text-sm font-bold uppercase tracking-widest">Our Story</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground mt-2 mb-3">
+              How We Were Formed
+            </h2>
+            <p className="text-lg text-foreground/55 max-w-2xl mx-auto">
+              Three defining stages that shaped our organisation into the thriving professional community it is today.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Track with 3 cards */}
+          <div className="relative">
+            {/* Connector line (desktop) */}
+            <div className="hidden md:block absolute top-[72px] left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-0.5 bg-gradient-to-r from-primary via-accent to-primary z-0" />
+
+            {/* Animated moving dot on the line */}
+            <div className="hidden md:block absolute top-[68px] left-[calc(16.67%+20px)] z-10">
+              <div className="w-3 h-3 rounded-full bg-primary shadow-md shadow-primary/50 animate-bounce" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10 items-stretch">
+              {[
+                {
+                  stage: '01',
+                  label: 'Formation',
+                  year: '1999',
+                  title: 'Formation of LMAI',
+                  desc: 'Globally the self adhesive label industry is being driven with narrow web production in letterpress, flexo, dry offset and screen technology.',
+                  color: 'from-primary/20 to-primary/5',
+                  iconBg: 'bg-primary',
+                  highlights: ['Narrow web production', 'Letterpress & flexo technology', 'Self adhesive label industry'],
+                },
+                {
+                  stage: '02',
+                  label: 'Recognition',
+                  year: '2009',
+                  title: 'Awards',
+                  desc: 'LMAI has received three trophies from World Label Award 2009 which our following proud bonafied members have won in the last competition held at Brussels in September 2009.',
+                  color: 'from-accent/20 to-accent/5',
+                  iconBg: 'bg-accent',
+                  highlights: ['3 trophies at World Label Award', 'Competition held in Brussels', 'September 2009'],
+                },
+                {
+                  stage: '03',
+                  label: 'Trust',
+                  year: 'Policy',
+                  title: 'Privacy Policy',
+                  desc: 'We believe it is important that you know how we treat the information about you, we receive from you, on the Internet. Our privacy policy is straightforward.',
+                  color: 'from-primary/20 to-accent/10',
+                  iconBg: 'bg-gradient-to-br from-primary to-accent',
+                  highlights: ['Transparent data handling', 'Your information protected', 'Straightforward policy'],
+                },
+              ].map((item, idx) => (
+                <Link key={idx} href="/formation" className="flex flex-col items-center group cursor-pointer h-full">
+                  {/* Step number circle */}
+                  <div className={`relative w-16 h-16 rounded-full ${item.iconBg} flex items-center justify-center text-white text-xl font-black shadow-lg mb-6 flex-shrink-0 group-hover:scale-110 transition-transform duration-300 z-20`}>
+                    {item.stage}
+                    {/* Pulse ring */}
+                    <span className="absolute inset-0 rounded-full border-2 border-primary/40 animate-ping opacity-30" />
+                  </div>
+
+                  {/* Card */}
+                  <div className="w-full flex-1 flex flex-col rounded-3xl border border-primary/15 p-8 transition-all duration-300 bg-primary/8 shadow-lg shadow-primary/10 group-hover:bg-primary group-hover:border-primary group-hover:-translate-y-2 group-hover:shadow-2xl group-hover:shadow-primary/40">
+                    {/* Year chip */}
+                    <span className="inline-block self-start px-3 py-1 rounded-full text-xs font-bold mb-4 shadow-sm transition-colors duration-300 bg-primary text-white group-hover:bg-white group-hover:text-primary">
+                      {item.year}
+                    </span>
+
+                    {/* Stage label */}
+                    <p className="text-xs font-bold uppercase tracking-widest mb-1 transition-colors duration-300 text-primary group-hover:text-white/70">{item.label}</p>
+
+                    {/* Title */}
+                    <h3 className="text-2xl font-black mb-3 transition-colors duration-300 text-foreground group-hover:text-white">{item.title}</h3>
+
+                    {/* Description */}
+                    <p className="text-sm leading-relaxed mb-6 transition-colors duration-300 text-foreground/60 group-hover:text-white/80">{item.desc}</p>
+
+                    {/* Highlights list */}
+                    <ul className="space-y-2 mb-6">
+                      {item.highlights.map((h, i) => (
+                        <li key={i} className="flex items-center gap-2 text-sm transition-colors duration-300 text-foreground/70 group-hover:text-white/85">
+                          <span className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 transition-colors duration-300 bg-primary/20 border border-primary/40 group-hover:bg-white/20 group-hover:border-white/40">
+                            <span className="w-1.5 h-1.5 rounded-full transition-colors duration-300 bg-primary group-hover:bg-white" />
+                          </span>
+                          {h}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Read More link */}
+                    <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-bold transition-all duration-300 group-hover:gap-3 text-primary group-hover:text-white">
+                      Read More <ArrowRight className="w-3.5 h-3.5" />
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 sm:px-6 lg:px-8 py-32 bg-secondary/5 relative overflow-hidden">
+        {/* Subtle background element */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+
+        <div className="max-w-7xl mx-auto relative">
+          {/* Section header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest">
+                <Star className="w-3 h-3 fill-primary" />
+                Special Events
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black text-foreground tracking-tight">
+                Featured <span className="text-primary">Events</span>
+              </h2>
+              <p className="text-lg text-foreground/50 max-w-xl">
+                Elevate your professional journey by attending our curated selection of high-impact gatherings and networking power-sessions.
+              </p>
+            </div>
+            <Button variant="ghost" className="group self-start md:self-auto rounded-full text-primary font-bold hover:bg-primary/10 px-6">
+              View All Events <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
+            {/* Main Highlight Event (8 columns) */}
+            <div className="md:col-span-8 group relative overflow-hidden rounded-[2.5rem] bg-card border border-border hover:border-primary/30 transition-all duration-500 shadow-xl shadow-primary/5 hover:shadow-primary/20">
+              <div className="grid grid-cols-1 lg:grid-cols-2 h-full min-h-[450px]">
+                {/* Image Side */}
+                <div className="relative overflow-hidden h-64 lg:h-auto">
+                  <Image
+                    src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80"
+                    alt="Annual Conference"
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent" />
+                  {/* Floating Date Chip */}
+                  <div className="absolute top-6 left-6 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-4 text-center shadow-2xl min-w-[70px]">
+                    <p className="text-xs font-bold text-white uppercase tracking-tighter">Mar</p>
+                    <p className="text-3xl font-black text-white leading-none">15</p>
+                  </div>
+                </div>
+
+                {/* Content Side */}
+                <div className="p-10 flex flex-col justify-between">
+                  <div>
+                    <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-6 inline-block">
+                      Signature Event
+                    </span>
+                    <h3 className="text-3xl md:text-4xl font-black text-foreground mb-4 group-hover:text-primary transition-colors leading-tight">
+                      Annual Conference & Leadership Summit 2024
+                    </h3>
+                    <p className="text-foreground/60 leading-relaxed mb-8">
+                      The flagship gathering for industry pioneers. Experience three days of intensive networking, breakout sessions, and visionary keynotes in the heart of Mumbai.
+                    </p>
+
+                    <div className="flex flex-wrap gap-4 mb-8">
+                      <div className="flex items-center gap-2 text-sm text-foreground/50 bg-secondary/50 px-3 py-1.5 rounded-xl border border-border">
+                        <Users className="w-4 h-4 text-primary" />
+                        <span>500+ Expected</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-foreground/50 bg-secondary/50 px-3 py-1.5 rounded-xl border border-border">
+                        <Globe className="w-4 h-4 text-primary" />
+                        <span>Mumbai Grand Ballroom</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button className="w-full lg:w-max px-8 py-6 rounded-2xl bg-primary text-primary-foreground font-bold hover:shadow-lg hover:shadow-primary/30 transition-all hover:-translate-y-1">
+                    Reserve Your Spot
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Side Events (4 columns) */}
+            <div className="md:col-span-4 flex flex-col gap-8">
+              {[
+                {
+                  title: 'Innovation Workshop',
+                  time: '10:00 AM - 4:00 PM',
+                  date: 'Apr 03',
+                  img: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=600&q=80',
+                  color: 'primary'
+                },
+                {
+                  title: 'Networking Night',
+                  time: '6:30 PM Onwards',
+                  date: 'Apr 18',
+                  img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80',
+                  color: 'accent'
+                }
+              ].map((event, i) => (
+                <div key={i} className="flex-1 group relative overflow-hidden rounded-[2rem] border border-border bg-card hover:border-primary/30 transition-all duration-500 shadow-lg shadow-primary/5 hover:-translate-y-1">
+                  <div className="relative h-44 overflow-hidden">
+                    <Image
+                      src={event.img}
+                      alt={event.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
+                    <div className="absolute top-4 right-4 backdrop-blur-sm bg-white/20 border border-white/30 rounded-xl px-2.5 py-1 text-center">
+                      <p className="text-[10px] font-bold text-white uppercase">{event.date.split(' ')[0]}</p>
+                      <p className="text-xl font-black text-white leading-none">{event.date.split(' ')[1]}</p>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h4 className="text-xl font-black text-foreground mb-2 group-hover:text-primary transition-colors">{event.title}</h4>
+                    <p className="text-sm text-foreground/50 flex items-center gap-2 mb-4">
+                      <Zap className="w-3 h-3 text-primary" />
+                      {event.time}
+                    </p>
+                    <span className="text-primary text-sm font-bold inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                      Details <ArrowRight className="w-4 h-4" />
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════
+          AWARDS & RECOGNITION — vibrant cards
+      ═══════════════════════════════════════════════ */}
+      <section className="px-4 sm:px-6 lg:px-8 py-24 bg-primary relative overflow-hidden">
+        {/* Decorative blobs */}
+        <div className="absolute -top-24 -right-24 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)',
+            backgroundSize: '40px 40px',
+          }}
+        />
+
+        <div className="max-w-7xl mx-auto relative">
+          <div className="text-center mb-14">
+            <span className="text-primary-foreground/70 text-sm font-bold uppercase tracking-widest">Celebrating Excellence</span>
+            <h2 className="text-4xl md:text-5xl font-bold text-primary-foreground mt-2 mb-3">Recognition &amp; Awards</h2>
+            <p className="text-lg text-primary-foreground/70 max-w-xl mx-auto">
+              Honouring outstanding achievements that shape the future of our industry.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: Award, title: 'Excellence in Innovation', desc: 'Recognizing forward-thinking solutions' },
-              { icon: TrendingUp, title: 'Leadership Excellence', desc: 'Honoring visionary leadership' },
-              { icon: Users, title: 'Community Impact', desc: 'Celebrating collaborative achievements' }
-            ].map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <Card key={idx} className="p-8 text-center hover:shadow-lg transition-shadow group cursor-pointer border border-border hover:border-primary/50">
-                  <div className="w-16 h-16 mx-auto mb-6 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                    <Icon className="w-8 h-8 text-primary" />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                  <p className="text-foreground/70">{item.desc}</p>
-                </Card>
-              );
-            })}
+              { icon: Award, title: 'Excellence in Innovation', desc: 'Recognising forward-thinking solutions that push boundaries.', num: '12' },
+              { icon: TrendingUp, title: 'Leadership Excellence', desc: 'Honouring visionary leaders who inspire transformation.', num: '8' },
+              { icon: Users, title: 'Community Impact', desc: 'Celebrating collaborative achievements that uplift societies.', num: '20' },
+            ].map(({ icon: Icon, title, desc, num }, idx) => (
+              <div
+                key={idx}
+                className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 text-center hover:bg-white/20 hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
+              >
+                <div className="w-16 h-16 mx-auto mb-5 bg-white/20 rounded-2xl flex items-center justify-center group-hover:bg-white/30 transition-colors group-hover:scale-110 duration-300">
+                  <Icon className="w-8 h-8 text-white" />
+                </div>
+                <div className="text-3xl font-black text-white mb-1">{num}+</div>
+                <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
+                <p className="text-primary-foreground/70 text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Resources Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Newsletters */}
+      {/* ═══════════════════════════════════════════════
+          LEADERSHIP — centered vision layout
+      ═══════════════════════════════════════════════ */}
+      <section className="px-4 sm:px-6 lg:px-8 py-24 relative overflow-hidden">
+        {/* Tinted background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
+        <div
+          className="absolute right-0 top-0 w-1/2 h-full opacity-[0.04]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, var(--color-primary) 1.5px, transparent 1.5px)',
+            backgroundSize: '28px 28px',
+          }}
+        />
+
+        <div className="max-w-4xl mx-auto relative text-center">
+          <div className="space-y-12">
+            {/* Header */}
             <div>
-              <div className="flex items-center gap-2 mb-8">
-                <Newspaper className="w-6 h-6 text-primary" />
-                <h2 className="text-3xl font-bold text-foreground">Newsletters</h2>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-black uppercase tracking-widest mb-6">
+                <Users className="w-4 h-4" />
+                Collective Excellence
               </div>
-              <div className="space-y-3">
-                {[1, 2, 3].map((news) => (
-                  <div key={news} className="p-4 bg-background border border-border rounded-lg hover:border-primary/50 transition-colors group cursor-pointer">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold text-foreground">Monthly Insights #{news}</h3>
-                        <p className="text-sm text-foreground/60 mt-1">Latest industry trends and updates</p>
-                      </div>
-                      <Button variant="ghost" className="rounded-full px-4">
-                        <ArrowRight className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <h2 className="text-4xl md:text-6xl font-black text-foreground mb-6 leading-[1.1] tracking-tight">
+                Driven by a Visionary <span className="text-primary italic">Leadership</span> Board
+              </h2>
+              <p className="text-xl text-foreground/50 leading-relaxed max-w-2xl mx-auto">
+                Our organisation is guided by a diverse panel of industry veterans, innovators, and strategic thinkers committed to the sustainable growth of our professional community.
+              </p>
             </div>
 
-            {/* Presentations */}
-            <div>
-              <div className="flex items-center gap-2 mb-8">
-                <Presentation className="w-6 h-6 text-primary" />
-                <h2 className="text-3xl font-bold text-foreground">Presentations</h2>
-              </div>
-              <div className="space-y-3">
-                {[1, 2, 3].map((pres) => (
-                  <div key={pres} className="p-4 bg-background border border-border rounded-lg hover:border-primary/50 transition-colors group cursor-pointer">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold text-foreground">Expert Talk #{pres}</h3>
-                        <p className="text-sm text-foreground/60 mt-1">Insights from industry professionals</p>
-                      </div>
-                      <Button variant="ghost" className="rounded-full px-4">
-                        <ArrowRight className="w-4 h-4" />
-                      </Button>
-                    </div>
+            {/* Feature Pills / Info bit */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+              {[
+                {
+                  title: 'Strategic Oversight',
+                  desc: 'Navigating long-term industry trends with precision.',
+                  icon: TrendingUp
+                },
+                {
+                  title: 'Global Mentorship',
+                  desc: 'Fostering the next generation of industry leaders.',
+                  icon: Globe
+                },
+                {
+                  title: 'Shared Innovation',
+                  desc: 'Driving collaborative research and development.',
+                  icon: Zap
+                }
+              ].map((item, idx) => (
+                <div key={idx} className="group p-6 rounded-[2rem] bg-card border border-border hover:border-primary/40 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1">
+                  <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+                    <item.icon className="w-6 h-6" />
                   </div>
-                ))}
-              </div>
+                  <h3 className="text-lg font-black text-foreground mb-2">{item.title}</h3>
+                  <p className="text-sm text-foreground/50 leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Call to Action */}
+            <div className="pt-8">
+              <Button asChild className="h-16 px-10 rounded-full bg-primary text-primary-foreground font-black text-lg shadow-2xl shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-1 transition-all">
+                <Link href="/leadership">
+                  Meet the Full Board <ArrowRight className="ml-2 w-5 h-5" />
+                </Link>
+              </Button>
+              <p className="mt-6 text-sm text-foreground/40 font-medium">
+                Over 25+ board members contributing to our excellence.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Call-to-Action */}
-      <section className="px-4 sm:px-6 lg:px-8 py-24 bg-gradient-to-br from-primary via-primary to-accent text-primary-foreground">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-pretty">Ready to Join?</h2>
-          <p className="text-lg md:text-xl mb-10 opacity-95 text-pretty max-w-2xl mx-auto">
-            Become part of a global community advancing innovation and professional excellence
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-white text-primary hover:bg-white/90 rounded-full px-10 py-3 text-lg font-semibold">
-              Start Your Journey
-            </Button>
-            <Button variant="outline" className="border-white text-primary-foreground hover:bg-white/20 rounded-full px-10 py-3 text-lg font-semibold">
-              Explore Programs
-            </Button>
-          </div>
-        </div>
-      </section>
+
+
+
     </div>
   );
 }

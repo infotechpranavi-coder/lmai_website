@@ -1,178 +1,198 @@
-import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Check } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import {
+  CheckCircle2,
+  Download,
+  Users,
+  TrendingUp,
+  Globe,
+  Zap,
+  ShieldCheck,
+  Database,
+  Search,
+  BookOpen,
+  BaggageClaim,
+  MessageSquare,
+  Award,
+  Cpu,
+  GraduationCap,
+  Building2,
+  Handshake
+} from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export const metadata = {
-  title: 'Membership | Intuitive Method Association',
-  description: 'Join our professional association and unlock exclusive benefits',
+  title: 'Membership | LMAI - Label Manufacturers Association Of India',
+  description: 'Join LMAI to access exclusive industry insights, networking opportunities, and professional development in the Indian label sector.',
 };
 
 export default function Membership() {
+  const membershipTypes = [
+    {
+      title: "ORDINARY membership",
+      subtitle: "(Printers and Converters only - Roll to Roll)",
+      icon: <Users className="w-8 h-8" />,
+      color: "bg-primary/5"
+    },
+    {
+      title: "ASSOCIATE membership",
+      subtitle: "(Machine and Material suppliers - supplier to the Label industry)",
+      icon: <Handshake className="w-8 h-8" />,
+      color: "bg-primary/5"
+    },
+    {
+      title: "HONORARY membership",
+      subtitle: "(Founder)",
+      icon: <Award className="w-8 h-8" />,
+      color: "bg-primary/5"
+    }
+  ];
+
+  const benefits = [
+    { text: "Insights on Industry Trends", icon: <TrendingUp className="w-5 h-5" /> },
+    { text: "Visibility and exposure", icon: <Globe className="w-5 h-5" /> },
+    { text: "Be a part of MSME schemes", icon: <ShieldCheck className="w-5 h-5" /> },
+    { text: "Participation in national and international forums", icon: <MessageSquare className="w-5 h-5" /> },
+    { text: "Focus on emerging competitiveness", icon: <Zap className="w-5 h-5" /> },
+    { text: "Opportunities to enhance visibility", icon: <Search className="w-5 h-5" /> },
+    { text: "Opportunity to network, build and share best practices", icon: <Users className="w-5 h-5" /> },
+    { text: "Industry Forums", icon: <Building2 className="w-5 h-5" /> },
+    { text: "Global Trade Development", icon: <Globe className="w-5 h-5" /> },
+    { text: "Policy Advocacy", icon: <Database className="w-5 h-5" /> },
+    { text: "Focus on Emerging companies", icon: <TrendingUp className="w-5 h-5" /> },
+    { text: "Work for the development of the Domestic Market", icon: <BaggageClaim className="w-5 h-5" /> },
+    { text: "Education and Talent Development", icon: <GraduationCap className="w-5 h-5" /> },
+    { text: "Partner with LMAI for various activities", icon: <Handshake className="w-5 h-5" /> },
+    { text: "Technical workshops and seminars", icon: <Cpu className="w-5 h-5" /> },
+  ];
+
   return (
-    <div className="w-full">
-      {/* Page Header */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Membership</h1>
-          <p className="text-lg md:text-xl text-balance">Join our thriving professional community today</p>
+    <div className="w-full bg-background selection:bg-primary selection:text-white">
+
+      {/* ──────────────────────────────────────────────────────────
+          HERO SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section className="relative h-[300px] md:h-[400px] w-full overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1600&q=80"
+          alt="LMAI Membership Banner"
+          fill
+          priority
+          className="object-cover brightness-[0.3]"
+        />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <div className="flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-[0.4em] mb-4">
+            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/ /</span>
+            <span className="text-white">Membership</span>
+          </div>
+          <h1 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+            Membership
+          </h1>
+          <div className="w-24 h-1.5 bg-primary mt-6 rounded-full" />
         </div>
       </section>
 
-      {/* Membership Tiers */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-secondary/20">
+      {/* ──────────────────────────────────────────────────────────
+          SECTION 1: HOW TO BECOME A MEMBER
+      ────────────────────────────────────────────────────────── */}
+      <section className="py-24 px-4 sm:px-6 lg:px-24">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Membership Tiers</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Standard',
-                price: '$99',
-                period: 'per year',
-                description: 'Perfect for individuals new to the association',
-                features: [
-                  'Access to monthly newsletters',
-                  'Member directory',
-                  'Networking events',
-                  'Online resource library',
-                  'Professional development webinars',
-                ],
-              },
-              {
-                name: 'Professional',
-                price: '$199',
-                period: 'per year',
-                description: 'Ideal for active professionals',
-                features: [
-                  'All Standard benefits',
-                  'Priority event access',
-                  'One-on-one mentoring',
-                  'Exclusive workshops',
-                  'Professional certification discount',
-                  'VIP networking events',
-                ],
-                featured: true,
-              },
-              {
-                name: 'Enterprise',
-                price: 'Custom',
-                period: 'pricing',
-                description: 'For organizations and teams',
-                features: [
-                  'All Professional benefits',
-                  'Multiple team member access',
-                  'Dedicated account manager',
-                  'Custom training programs',
-                  'Sponsorship opportunities',
-                  'Corporate networking events',
-                ],
-              },
-            ].map((tier, idx) => (
-              <Card
-                key={idx}
-                className={`p-8 flex flex-col ${
-                  tier.featured ? 'border-2 border-primary shadow-lg' : ''
-                } hover:shadow-lg transition-shadow`}
-              >
-                {tier.featured && (
-                  <div className="mb-4 inline-block bg-primary text-primary-foreground px-3 py-1 rounded-full text-sm font-semibold w-fit">
-                    Most Popular
-                  </div>
-                )}
-                <h3 className="text-2xl font-bold mb-2">{tier.name}</h3>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold text-primary">{tier.price}</span>
-                  <span className="text-foreground/70 ml-2">{tier.period}</span>
+          <div className="mb-16 space-y-4">
+            <span className="text-primary text-xs font-black uppercase tracking-widest">Enrollment Process</span>
+            <h2 className="text-4xl md:text-5xl font-black text-foreground uppercase tracking-tighter leading-none">How To <span className="text-primary italic">Become</span> A Member</h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-24">
+            <div className="lg:col-span-12 space-y-8 text-xl text-foreground/70 leading-relaxed font-bold italic">
+              <p className="border-l-4 border-primary pl-8">
+                If your company is manufacturing self-adhesive labels and related products, or supplying raw materials, or equipment used in the manufacturing of self-adhesive labels and related products, you are eligible for an LMAI membership.
+              </p>
+              <p className="text-lg font-medium not-italic text-foreground/50">
+                The only thing you need to do is to fill in the application form which you can download from section and return it to the LMAI secretariat or you can fill up our online form to apply for Membership.
+              </p>
+            </div>
+
+            <div className="lg:col-span-12">
+              <div className="mb-10 text-primary text-[10px] font-black uppercase tracking-[0.4em]">Membership Types</div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {membershipTypes.map((type, i) => (
+                  <Card key={i} className="p-10 rounded-[3rem] border-none bg-primary/5 flex flex-col justify-between group hover:bg-primary hover:-translate-y-2 transition-all duration-500 shadow-sm hover:shadow-2xl cursor-pointer">
+                    <div className="mb-8 p-4 rounded-2xl bg-white w-fit shadow-sm group-hover:bg-white/10 group-hover:backdrop-blur-md transition-all duration-500">
+                      <div className="text-primary group-hover:text-white transition-colors duration-500">
+                        {type.icon}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-black text-foreground uppercase tracking-tight mb-4 group-hover:text-white transition-colors duration-500">
+                        {type.title}
+                      </h4>
+                      <p className="text-xs font-bold text-foreground/40 leading-relaxed italic group-hover:text-white/60 transition-colors duration-500">
+                        {type.subtitle}
+                      </p>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+              <p className="mt-10 text-[10px] text-foreground/30 font-bold uppercase tracking-widest text-center">
+                For details you can verify article of association available on request from LMAI secretariat
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ──────────────────────────────────────────────────────────
+          SECTION 2: BENEFITS
+      ────────────────────────────────────────────────────────── */}
+      <section className="py-24 px-4 sm:px-6 lg:px-24 bg-foreground text-background relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/4 h-full bg-primary/10 -skew-x-12 translate-x-20 pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto relative">
+          <div className="mb-20 space-y-4">
+            <span className="text-primary text-xs font-black uppercase tracking-widest">Industry Advantage</span>
+            <h3 className="text-4xl md:text-6xl font-black text-background uppercase tracking-tighter leading-none italic">Benefits</h3>
+          </div>
+
+          <div className="mb-20 space-y-8 text-xl md:text-2xl font-black text-background/70 tracking-tight leading-tight">
+            <p className="border-l-8 border-primary pl-8 text-balance">
+              LMAI Membership provides a unique opportunity for an organisation and its professionals to engage and drive thought leadership in activities, forums and industry groups.
+            </p>
+            <p className="text-lg font-medium text-background/40 tracking-normal leading-relaxed">
+              LMAI members address current challenges, build strategies for the future and share best practices, with the overall objective of building a growth-led competitive and sustainable industry.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12 h-full">
+            {benefits.map((benefit, i) => (
+              <div key={i} className="flex items-start gap-4 group h-full">
+                <div className="p-3 rounded-xl bg-primary/20 text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300 h-full">
+                  {benefit.icon}
                 </div>
-                <p className="text-foreground/70 mb-6">{tier.description}</p>
-                <ul className="space-y-3 mb-8 flex-1">
-                  {tier.features.map((feature, featureIdx) => (
-                    <li key={featureIdx} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                      <span className="text-foreground/80">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  className={`w-full rounded-full py-6 ${
-                    tier.featured
-                      ? 'bg-primary hover:bg-primary/90 text-primary-foreground'
-                      : 'bg-secondary text-foreground hover:bg-secondary/80'
-                  }`}
-                >
-                  Get Started
-                </Button>
-              </Card>
+                <p className="text-sm md:text-base font-black uppercase tracking-tight text-background/60 group-hover:text-primary transition-colors duration-300 h-full">
+                  {benefit.text}
+                </p>
+              </div>
             ))}
+          </div>
+
+          <div className="mt-20 flex justify-center">
+            <Button
+              className="h-16 w-full max-w-xl rounded-full bg-primary text-white font-black uppercase text-xs tracking-[0.3em] transition-all duration-500 hover:bg-white hover:text-black hover:-translate-y-1 shadow-xl hover:shadow-primary/40 flex items-center gap-4 group/btn border-2 border-transparent hover:border-white"
+              asChild
+            >
+              <a href="/forms/membership-enrollment.pdf" download>
+                Download Membership Form
+                <Download className="w-5 h-5 group-hover/btn:translate-y-1 transition-transform" />
+              </a>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Benefits Overview */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12">Exclusive Member Benefits</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { title: 'Networking Opportunities', description: 'Connect with industry leaders and professionals' },
-              { title: 'Professional Development', description: 'Access exclusive training and certification programs' },
-              { title: 'Industry Insights', description: 'Stay updated with the latest trends and best practices' },
-              { title: 'Resource Library', description: 'Unlimited access to research and educational materials' },
-              { title: 'Mentorship Program', description: 'Learn from experienced mentors in your field' },
-              { title: 'Job Board Access', description: 'Browse exclusive career opportunities' },
-            ].map((benefit, idx) => (
-              <Card key={idx} className="p-6 hover:shadow-lg transition-shadow">
-                <h3 className="text-xl font-bold mb-3">{benefit.title}</h3>
-                <p className="text-foreground/70">{benefit.description}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* FAQ Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-secondary/20">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            {[
-              {
-                question: 'How do I renew my membership?',
-                answer: 'You can renew your membership through your online member portal 30 days before your membership expires.',
-              },
-              {
-                question: 'What if I want to cancel my membership?',
-                answer: 'You can manage your membership status anytime through your account settings or contact our support team.',
-              },
-              {
-                question: 'Are there any additional fees?',
-                answer: 'Some special events and advanced certifications may have additional fees, but all standard member benefits are included.',
-              },
-              {
-                question: 'Can I upgrade or downgrade my tier?',
-                answer: 'Yes! You can change your membership tier at any time. Changes take effect immediately.',
-              },
-            ].map((faq, idx) => (
-              <Card key={idx} className="p-6">
-                <h3 className="text-lg font-bold mb-3">{faq.question}</h3>
-                <p className="text-foreground/70">{faq.answer}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* CTA Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Join?</h2>
-          <p className="text-lg md:text-xl mb-8 text-balance">
-            Start your professional journey with us today
-          </p>
-          <Button className="bg-white text-primary hover:bg-white/90 rounded-full px-8 py-6 text-lg">
-            Become a Member
-          </Button>
-        </div>
-      </section>
     </div>
   );
 }

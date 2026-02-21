@@ -1,266 +1,204 @@
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Mail, Phone, MapPin, Clock } from 'lucide-react';
+"use client";
 
-export const metadata = {
-  title: 'Contact | Intuitive Method Association',
-  description: 'Get in touch with the Intuitive Method Association',
-};
+import { Button } from '@/components/ui/button';
+import { Mail, Phone, MapPin, Clock, ArrowRight, Send } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Contact() {
   return (
-    <div className="w-full">
-      {/* Page Header */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Us</h1>
-          <p className="text-lg md:text-xl text-balance">We'd love to hear from you. Reach out with any questions or feedback</p>
-        </div>
-      </section>
+    <div className="w-full bg-background selection:bg-primary selection:text-white">
 
-      {/* Contact Information & Form */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-secondary/20">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            {/* Contact Info Cards */}
-            <Card className="p-8 hover:shadow-lg transition-shadow">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold mb-2">Address</h3>
-                  <p className="text-foreground/70 text-sm">
-                    123 Association Street<br />
-                    Professional City, PC 12345<br />
-                    United States
-                  </p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-8 hover:shadow-lg transition-shadow">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold mb-2">Phone</h3>
-                  <p className="text-foreground/70 text-sm">
-                    Main: <a href="tel:+1234567890" className="hover:underline">(123) 456-7890</a><br />
-                    Membership: <a href="tel:+1234567891" className="hover:underline">(123) 456-7891</a><br />
-                    Events: <a href="tel:+1234567892" className="hover:underline">(123) 456-7892</a>
-                  </p>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-8 hover:shadow-lg transition-shadow">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold mb-2">Email</h3>
-                  <p className="text-foreground/70 text-sm">
-                    General: <a href="mailto:info@intuitivemethod.org" className="hover:underline">info@intuitivemethod.org</a><br />
-                    Support: <a href="mailto:support@intuitivemethod.org" className="hover:underline">support@intuitivemethod.org</a><br />
-                    Careers: <a href="mailto:careers@intuitivemethod.org" className="hover:underline">careers@intuitivemethod.org</a>
-                  </p>
-                </div>
-              </div>
-            </Card>
+      {/* ──────────────────────────────────────────────────────────
+          HERO SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section className="relative h-[400px] md:h-[500px] w-full overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?w=1600&q=80"
+          alt="Contact LMAI"
+          fill
+          priority
+          className="object-cover brightness-[0.4]"
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <div className="flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-[0.4em] mb-4">
+            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/ /</span>
+            <span className="text-white">Contact</span>
           </div>
-
-          {/* Contact Form */}
-          <Card className="p-12 max-w-4xl">
-            <h2 className="text-3xl font-bold mb-8">Send us a Message</h2>
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block font-semibold mb-2">First Name</label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="John"
-                  />
-                </div>
-                <div>
-                  <label className="block font-semibold mb-2">Last Name</label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="Doe"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block font-semibold mb-2">Email Address</label>
-                <input
-                  type="email"
-                  className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="john@example.com"
-                />
-              </div>
-              <div>
-                <label className="block font-semibold mb-2">Subject</label>
-                <select className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                  <option>Select a subject</option>
-                  <option>Membership Inquiry</option>
-                  <option>Event Registration</option>
-                  <option>General Feedback</option>
-                  <option>Technical Support</option>
-                  <option>Other</option>
-                </select>
-              </div>
-              <div>
-                <label className="block font-semibold mb-2">Message</label>
-                <textarea
-                  rows={6}
-                  className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  placeholder="Tell us how we can help..."
-                />
-              </div>
-              <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg py-6 font-semibold">
-                Send Message
-              </Button>
-            </form>
-          </Card>
+          <h1 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+            Get In <span className="text-primary italic">Touch</span>
+          </h1>
+          <div className="w-24 h-1.5 bg-primary mt-8 rounded-full" />
         </div>
       </section>
 
-      {/* Office Hours & Support */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Support & Hours</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <Card className="p-8">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Office Hours</h3>
-                </div>
-              </div>
-              <div className="space-y-3 text-foreground/70">
-                <div className="flex justify-between">
-                  <span>Monday - Friday:</span>
-                  <span className="font-semibold text-foreground">9:00 AM - 6:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Saturday:</span>
-                  <span className="font-semibold text-foreground">10:00 AM - 4:00 PM</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Sunday:</span>
-                  <span className="font-semibold text-foreground">Closed</span>
-                </div>
-              </div>
-            </Card>
-
-            <Card className="p-8">
-              <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Response Time</h3>
-                </div>
-              </div>
-              <div className="space-y-3 text-foreground/70">
-                <div>
-                  <span className="font-semibold text-foreground">Email Support:</span>
-                  <p>Typically respond within 24 hours</p>
-                </div>
-                <div>
-                  <span className="font-semibold text-foreground">Phone Support:</span>
-                  <p>Available during business hours</p>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Departments */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-secondary/20">
+      {/* ──────────────────────────────────────────────────────────
+          CONTACT INFO & FORM SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section className="py-32 px-4 sm:px-6 lg:px-24 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12">Contact by Department</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                department: 'Membership Services',
-                contact: 'membership@intuitivemethod.org',
-                phone: '(123) 456-7891',
-                info: 'Join, renew, or manage your membership',
-              },
-              {
-                department: 'Events & Programs',
-                contact: 'events@intuitivemethod.org',
-                phone: '(123) 456-7892',
-                info: 'Register for events or propose a presentation',
-              },
-              {
-                department: 'Technical Support',
-                contact: 'support@intuitivemethod.org',
-                phone: '(123) 456-7893',
-                info: 'Help with website or member portal',
-              },
-              {
-                department: 'Career Opportunities',
-                contact: 'careers@intuitivemethod.org',
-                phone: '(123) 456-7894',
-                info: 'Explore job openings and career resources',
-              },
-              {
-                department: 'Sponsorships',
-                contact: 'sponsorship@intuitivemethod.org',
-                phone: '(123) 456-7895',
-                info: 'Partner with us for events and initiatives',
-              },
-              {
-                department: 'Public Relations',
-                contact: 'press@intuitivemethod.org',
-                phone: '(123) 456-7896',
-                info: 'Media inquiries and press coverage',
-              },
-            ].map((dept, idx) => (
-              <Card key={idx} className="p-6 hover:shadow-lg transition-shadow">
-                <h3 className="text-lg font-bold mb-4">{dept.department}</h3>
-                <div className="space-y-3 text-sm">
-                  <p className="text-foreground/70">{dept.info}</p>
-                  <div>
-                    <p className="font-semibold text-foreground">Email:</p>
-                    <a href={`mailto:${dept.contact}`} className="text-primary hover:underline">
-                      {dept.contact}
-                    </a>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
+
+            {/* Left Side: Info & Presence */}
+            <div className="space-y-16">
+              <div className="space-y-4">
+                <span className="text-primary text-xs font-black uppercase tracking-widest block">Connect With Us</span>
+                <h2 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-tighter leading-[0.9]">
+                  Let's Start A <br /> <span className="text-primary italic">Conversation.</span>
+                </h2>
+                <p className="text-lg text-foreground/50 font-bold max-w-md mt-8 border-l-4 border-primary pl-6 py-2 uppercase tracking-wider">
+                  Contact the LMAI secretariat for any inquiries regarding membership, events, or industry regulations.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <MapPin className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">Our Office</span>
                   </div>
-                  <div>
-                    <p className="font-semibold text-foreground">Phone:</p>
-                    <a href={`tel:${dept.phone}`} className="text-primary hover:underline">
-                      {dept.phone}
-                    </a>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <span className="text-primary text-[8px] font-black uppercase">Admin Office</span>
+                      <p className="text-sm font-bold text-foreground/60 leading-relaxed uppercase tracking-widest">
+                        A418, Mayuresh Trade Center, Plot No 4, Sector 19, Vashi Turbhe Road, Navi Mumbai - 400703. (India)
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <span className="text-primary text-[8px] font-black uppercase">Register Office</span>
+                      <p className="text-sm font-bold text-foreground/60 leading-relaxed uppercase tracking-widest">
+                        A419, Mayuresh Trade Center, Plot No 4, Sector 19, Vashi Turbhe Road, Navi Mumbai - 400703. (India)
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Map Placeholder */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Find Us</h2>
-          <div className="w-full h-96 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center border border-border">
-            <div className="text-center">
-              <MapPin className="w-12 h-12 text-primary mx-auto mb-4" />
-              <p className="text-foreground/70">123 Association Street, Professional City, PC 12345</p>
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Mail className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">Email Us</span>
+                  </div>
+                  <p className="text-sm font-bold text-foreground/60 leading-relaxed uppercase tracking-widest">
+                    lmaiorg@gmail.com
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Phone className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">Call Us</span>
+                  </div>
+                  <p className="text-sm font-bold text-foreground/60 leading-relaxed uppercase tracking-widest">
+                    +91 8097333995<br />
+                    Mon - Sat: 10:00 - 18:00
+                  </p>
+                </div>
+
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Clock className="w-5 h-5 text-primary" />
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">Secretariat</span>
+                  </div>
+                  <p className="text-sm font-bold text-foreground/60 leading-relaxed uppercase tracking-widest">
+                    Central Hub<br />
+                    Member Support
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Side: Professional Form */}
+            <div className="bg-[#0a0a0b] rounded-[3rem] p-12 md:p-16 text-white shadow-2xl relative overflow-hidden group">
+              {/* Abstract Decoration */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[100px] group-hover:bg-primary/30 transition-colors" />
+
+              <form className="relative z-10 space-y-8">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">Full Name</label>
+                  <input
+                    type="text"
+                    placeholder="ENTER YOUR NAME"
+                    className="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-primary transition-colors font-black text-xs tracking-widest placeholder:text-white/30"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">Email Address</label>
+                    <input
+                      type="email"
+                      placeholder="EMAIL@COMPANY.COM"
+                      className="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-primary transition-colors font-black text-xs tracking-widest placeholder:text-white/30"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">Subject</label>
+                    <input
+                      type="text"
+                      placeholder="INQUIRY TYPE"
+                      className="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-primary transition-colors font-black text-xs tracking-widest placeholder:text-white/30"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/70">Message</label>
+                  <textarea
+                    rows={4}
+                    placeholder="HOW CAN WE ASSIST YOU?"
+                    className="w-full bg-transparent border-b border-white/10 py-4 outline-none focus:border-primary transition-colors font-black text-xs tracking-widest placeholder:text-white/30 resize-none"
+                  />
+                </div>
+
+                <Button className="w-full h-16 rounded-full bg-white text-black hover:bg-primary hover:text-white font-black uppercase text-xs tracking-[0.3em] flex items-center justify-center gap-4 px-10 group/btn transition-all duration-500 shadow-xl shadow-black/20">
+                  Submit Inquiry
+                  <Send className="w-5 h-5 group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
+                </Button>
+              </form>
             </div>
           </div>
         </div>
       </section>
+
+      {/* ──────────────────────────────────────────────────────────
+          MAP SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section className="px-4 sm:px-6 lg:px-24 pb-32">
+        <div className="max-w-7xl mx-auto">
+          <div className="relative w-full h-[500px] rounded-[3rem] overflow-hidden shadow-2xl group grayscale hover:grayscale-0 transition-all duration-1000 border border-border/50">
+            {/* Google Map Embed (Placeholder - Ready for exact location) */}
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.8033706037!2d73.0061!3d19.0725!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c139ce6b23b1%3A0xe5110d93540e70b2!2sMayuresh%20Trade%20Center!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className="absolute inset-0"
+            ></iframe>
+
+            {/* Map Overlay Button */}
+            <div className="absolute bottom-10 right-10 z-10">
+              <Button className="rounded-full bg-white text-black hover:bg-black hover:text-white font-black uppercase text-[10px] tracking-widest px-8 h-12 flex items-center gap-3 transition-all">
+                Open in Maps
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

@@ -1,221 +1,159 @@
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Download, PlayCircle, Speaker } from 'lucide-react';
+"use client";
 
-export const metadata = {
-  title: 'Presentations | Intuitive Method Association',
-  description: 'Access presentations and talks from industry experts and thought leaders',
-};
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Play, Calendar, User, ArrowRight, Video } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Presentations() {
+  const presentations = [
+    {
+      title: "The Future of Label Manufacturing 2024",
+      speaker: "Rajish Verma",
+      date: "March 15, 2024",
+      description: "A deep dive into the technological transformations and automation trends shaping the Indian label industry.",
+      thumbnail: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80",
+      category: "Keynote"
+    },
+    {
+      title: "Sustainability in Flexible Packaging",
+      speaker: "Ananya Sharma",
+      date: "February 28, 2024",
+      description: "Exploring eco-friendly materials and waste reduction strategies for modern packaging solutions.",
+      thumbnail: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&q=80",
+      category: "Technical Talk"
+    },
+    {
+      title: "Global Supply Chain Challenges in Printing",
+      speaker: "Amit Goel",
+      date: "January 10, 2024",
+      description: "Addressing the logistics and raw material hurdles faced by manufacturers in the current global climate.",
+      thumbnail: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80",
+      category: "Panel Discussion"
+    },
+    {
+      title: "Innovation in UV Leading Technologies",
+      speaker: "Dr. Sanjay Gupta",
+      date: "December 5, 2023",
+      description: "Technical insights into the latest UV curing systems and their efficiency in high-speed label presses.",
+      thumbnail: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&q=80",
+      category: "Workshop"
+    },
+    {
+      title: "Design Thinking for Label Aesthetics",
+      speaker: "Priya Malhotra",
+      date: "November 20, 2023",
+      description: "How creative design and material choice influence consumer behavior at the retail shelf.",
+      thumbnail: "https://images.unsplash.com/photo-1556761175-4b46a572b786?w=800&q=80",
+      category: "Design Seminar"
+    },
+    {
+      title: "LMAI Secretariat: Roadmap 2025",
+      speaker: "Kuldip Goel",
+      date: "October 12, 2023",
+      description: "Defining the long-term vision and membership benefits for the Label Manufacturers Association of India.",
+      thumbnail: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&q=80",
+      category: "Strategy"
+    }
+  ];
+
   return (
-    <div className="w-full">
-      {/* Page Header */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-3">
-            <Speaker className="w-12 h-12" />
-            Expert Presentations
+    <div className="w-full bg-background selection:bg-primary selection:text-white">
+
+      {/* ──────────────────────────────────────────────────────────
+          HERO SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section className="relative h-[400px] md:h-[500px] w-full overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1475721027785-f74dea327912?w=1600&q=80"
+          alt="LMAI Presentations"
+          fill
+          priority
+          className="object-cover brightness-[0.4]"
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <div className="flex items-center gap-2 text-primary text-[10px] font-black uppercase tracking-[0.4em] mb-4">
+            <Link href="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/ /</span>
+            <span className="text-white">Presentations</span>
+          </div>
+          <h1 className="text-5xl md:text-8xl font-black text-white uppercase tracking-tighter leading-none">
+            Expert <span className="text-primary italic">Sessions</span>
           </h1>
-          <p className="text-lg md:text-xl text-balance">Learn from industry leaders and thought experts</p>
+          <div className="w-24 h-1.5 bg-primary mt-8 rounded-full" />
         </div>
       </section>
 
-      {/* Featured Presentations */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-secondary/20">
+      {/* ──────────────────────────────────────────────────────────
+          VIDEO GRID SECTION
+      ────────────────────────────────────────────────────────── */}
+      <section className="py-32 px-4 sm:px-6 lg:px-24 bg-white">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12">Featured Presentations</h2>
-          <div className="space-y-6">
-            {[
-              {
-                title: 'The Future of Innovation in 2024',
-                speaker: 'Dr. Sarah Johnson',
-                date: 'February 15, 2024',
-                duration: '45 minutes',
-                topics: ['Innovation', 'Technology Trends', 'Future Planning'],
-                description: 'Exploring emerging technologies and innovative approaches that will shape our industry',
-              },
-              {
-                title: 'Leading Through Change: A Modern Perspective',
-                speaker: 'Michael Chen',
-                date: 'January 20, 2024',
-                duration: '50 minutes',
-                topics: ['Leadership', 'Change Management', 'Team Development'],
-                description: 'Strategies for effective leadership in times of organizational transformation',
-              },
-              {
-                title: 'Building Sustainable Business Models',
-                speaker: 'Emma Williams',
-                date: 'December 10, 2023',
-                duration: '55 minutes',
-                topics: ['Sustainability', 'Business Strategy', 'Social Impact'],
-                description: 'How to integrate sustainability into your business strategy for long-term success',
-              },
-              {
-                title: 'Data-Driven Decision Making',
-                speaker: 'David Rodriguez',
-                date: 'November 18, 2023',
-                duration: '40 minutes',
-                topics: ['Data Analytics', 'Business Intelligence', 'Strategy'],
-                description: 'Leveraging data insights to make smarter business decisions and drive growth',
-              },
-            ].map((presentation, idx) => (
-              <Card key={idx} className="p-8 hover:shadow-lg transition-shadow">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                  <div className="lg:col-span-2">
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="text-2xl font-bold mb-2">{presentation.title}</h3>
-                        <div className="flex items-center gap-4 text-foreground/70 mb-4">
-                          <span className="font-semibold text-foreground">{presentation.speaker}</span>
-                          <span>•</span>
-                          <span>{presentation.date}</span>
-                          <span>•</span>
-                          <span>{presentation.duration}</span>
-                        </div>
-                      </div>
-                      <PlayCircle className="w-8 h-8 text-primary flex-shrink-0" />
-                    </div>
-                    <p className="text-foreground/80 mb-4">{presentation.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {presentation.topics.map((topic, topicIdx) => (
-                        <span key={topicIdx} className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs">
-                          {topic}
-                        </span>
-                      ))}
+          <div className="mb-24 space-y-4">
+            <span className="text-primary text-xs font-black uppercase tracking-widest block">Video Archives</span>
+            <h2 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-tighter leading-none">
+              Knowledge <span className="text-primary italic">Sharing</span>
+            </h2>
+            <p className="text-lg text-foreground/50 font-bold max-w-2xl mt-8 border-l-4 border-primary pl-6 py-2">
+              Watch keynote speeches, technical presentations, and panel discussions from our global summits and workshops.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {presentations.map((item, idx) => (
+              <div key={idx} className="group cursor-pointer">
+                <div className="relative aspect-video w-full overflow-hidden rounded-[2rem] bg-[#0a0a0b] shadow-lg group-hover:shadow-2xl transition-all duration-500">
+                  <Image
+                    src={item.thumbnail}
+                    alt={item.title}
+                    fill
+                    className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+                  />
+
+                  {/* Play Button Overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-500">
+                      <Play className="w-6 h-6 text-white ml-1 fill-white" />
                     </div>
                   </div>
-                  <div className="flex flex-col gap-3">
-                    <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full w-full flex items-center justify-center gap-2">
-                      <PlayCircle className="w-4 h-4" />
-                      Watch
-                    </Button>
-                    <Button variant="outline" className="rounded-full w-full flex items-center justify-center gap-2">
-                      <Download className="w-4 h-4" />
-                      Download Slides
-                    </Button>
-                  </div>
+
                 </div>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Presentation Series */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12">Presentation Series</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Leadership Series',
-                count: '12 presentations',
-                description: 'Expert insights on leadership, management, and organizational development',
-              },
-              {
-                name: 'Technology & Innovation',
-                count: '18 presentations',
-                description: 'Cutting-edge technology trends and innovative business solutions',
-              },
-              {
-                name: 'Professional Development',
-                count: '15 presentations',
-                description: 'Skills development, career advancement, and personal growth',
-              },
-              {
-                name: 'Industry Insights',
-                count: '20 presentations',
-                description: 'Deep dives into industry trends, challenges, and opportunities',
-              },
-              {
-                name: 'Business Strategy',
-                count: '16 presentations',
-                description: 'Strategic planning, market analysis, and business growth strategies',
-              },
-              {
-                name: 'Sustainability',
-                count: '10 presentations',
-                description: 'Building sustainable business practices and social responsibility',
-              },
-            ].map((series, idx) => (
-              <Card key={idx} className="p-8 text-center hover:shadow-lg transition-shadow cursor-pointer group">
-                <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">{series.name}</h3>
-                <p className="text-primary font-semibold mb-4">{series.count}</p>
-                <p className="text-foreground/70">{series.description}</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Speaker Directory */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-secondary/20">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12">Featured Speakers</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { name: 'Dr. Sarah Johnson', title: 'Innovation Expert', presentations: '8' },
-              { name: 'Michael Chen', title: 'Leadership Coach', presentations: '12' },
-              { name: 'Emma Williams', title: 'Sustainability Consultant', presentations: '6' },
-              { name: 'David Rodriguez', title: 'Data Scientist', presentations: '10' },
-            ].map((speaker, idx) => (
-              <Card key={idx} className="p-6 text-center hover:shadow-lg transition-shadow">
-                <div className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-primary/20 to-accent/20 rounded-full" />
-                <h3 className="text-lg font-bold mb-1">{speaker.name}</h3>
-                <p className="text-sm text-foreground/70 mb-4">{speaker.title}</p>
-                <p className="text-xs text-primary font-semibold">{speaker.presentations} presentations</p>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Search & Filter */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Browse Presentations</h2>
-          <Card className="p-8">
-            <div className="space-y-6">
-              <input
-                type="text"
-                placeholder="Search presentations..."
-                className="w-full px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <select className="px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                  <option>All Categories</option>
-                  <option>Leadership</option>
-                  <option>Technology</option>
-                  <option>Strategy</option>
-                </select>
-                <select className="px-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
-                  <option>All Speakers</option>
-                  <option>Dr. Sarah Johnson</option>
-                  <option>Michael Chen</option>
-                  <option>Emma Williams</option>
-                </select>
-                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg">
-                  Search
-                </Button>
+                <div className="mt-8">
+                  <h3 className="text-xl font-black uppercase tracking-tighter leading-tight group-hover:text-primary transition-colors line-clamp-2 text-center">
+                    {item.title}
+                  </h3>
+                </div>
               </div>
-            </div>
-          </Card>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="px-4 sm:px-6 lg:px-8 py-12 md:py-16 bg-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Want to Become a Speaker?</h2>
-          <p className="text-lg md:text-xl mb-8 text-balance">
-            Share your expertise and insights with our professional community
+      {/* ──────────────────────────────────────────────────────────
+          CTA - WATCH ON YOUTUBE
+      ────────────────────────────────────────────────────────── */}
+      <section className="py-24 px-4 sm:px-6 lg:px-24 bg-[#0a0a0b] text-white">
+        <div className="max-w-7xl mx-auto rounded-[3rem] bg-secondary/5 border border-white/5 p-12 md:p-24 flex flex-col items-center text-center space-y-10 relative overflow-hidden group">
+          {/* Abstract Decoration */}
+          <div className="absolute -top-48 -left-48 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] group-hover:scale-110 transition-transform duration-1000" />
+
+          <Video className="w-16 h-16 text-primary" />
+          <h2 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none relative z-10">
+            SUBSCRIBE TO OUR <br /> <span className="text-primary italic">YOUTUBE CHANNEL.</span>
+          </h2>
+          <p className="text-lg font-bold text-white/50 max-w-2xl relative z-10">
+            Get instant notifications for all our technical workshops, annual conferences, and exclusive industry leader interviews.
           </p>
-          <Button className="bg-white text-primary hover:bg-white/90 rounded-full px-8 py-6 text-lg">
-            Apply as Speaker
+          <Button className="rounded-full bg-primary hover:bg-white hover:text-black text-white font-black uppercase text-xs tracking-[0.3em] h-16 px-12 transition-all duration-500 relative z-10 flex items-center gap-4 group/btn">
+            Explore Our Channel
+            <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-2 transition-transform" />
           </Button>
         </div>
       </section>
+
     </div>
   );
 }
