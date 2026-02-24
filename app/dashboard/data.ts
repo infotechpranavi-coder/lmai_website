@@ -1,6 +1,6 @@
 export const initialBanners = {
     'Home': [
-        { id: 1, title: 'Advancing the Label Industry', subtitle: 'Innovation & Excellence since 1999', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80' },
+        { id: 1, title: 'Advancing the Label Industry', subtitle: 'Innovation & Excellence since 2002', image: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=1600&q=80' },
         { id: 2, title: 'Global Recognition', subtitle: 'Empowering label manufacturers worldwide', image: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=1600&q=80' }
     ],
     'About': [{ id: 1, title: 'Our Journey', subtitle: 'The foundation of excellence', image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80' }],

@@ -94,9 +94,9 @@ export default function Home() {
                 {
                   stage: '01',
                   label: 'Formation',
-                  year: '1999',
+                  year: '2002',
                   title: 'Formation of LMAI',
-                  desc: 'Globally the self adhesive label industry is being driven with narrow web production in letterpress, flexo, dry offset and screen technology.',
+                  desc: 'Founded in 2002 duly initiated by Mr. Amit Sheth with a handful of Entrepreneurs to recognize and promote the Label manufacturers across India.',
                   color: 'from-primary/20 to-primary/5',
                   iconBg: 'bg-primary',
                   highlights: ['Narrow web production', 'Letterpress & flexo technology', 'Self adhesive label industry'],

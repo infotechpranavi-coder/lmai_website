@@ -62,7 +62,7 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  'relative px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] transition-all duration-300 group',
+                  'relative px-4 py-2 text-xs font-black uppercase tracking-[0.15em] transition-all duration-300 group',
                   isActive ? 'text-primary' : 'text-foreground/60 hover:text-primary'
                 )}
               >
@@ -81,7 +81,7 @@ export default function Header() {
         {/* Action Button (Desktop) */}
         <div className="hidden xl:block">
           <Link href="/membership">
-            <button className="h-10 px-6 rounded-full bg-primary text-white text-[10px] font-black uppercase tracking-widest hover:bg-black transition-colors shadow-lg shadow-primary/20">
+            <button className="h-10 px-6 rounded-full bg-primary text-white text-xs font-black uppercase tracking-widest hover:bg-black transition-colors shadow-lg shadow-primary/20">
               Join Association
             </button>
           </Link>

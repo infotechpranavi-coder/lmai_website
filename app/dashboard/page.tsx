@@ -104,10 +104,15 @@ export default function Dashboard() {
             ]);
 
             // Transform banners back to page-grouped object
-            const groupedBanners: any = {};
+            const groupedBanners: any = {
+                'Home': [], 'About': [], 'Membership': [], 'Events': [],
+                'Awards': [], 'Newsletters': [], 'Presentations': [],
+                'Management': [], 'Contact': []
+            };
             b.forEach((banner: any) => {
-                if (!groupedBanners[banner.page]) groupedBanners[banner.page] = [];
-                groupedBanners[banner.page].push(banner);
+                if (groupedBanners[banner.page]) {
+                    groupedBanners[banner.page].push(banner);
+                }
             });
             setBanners(groupedBanners);
 
@@ -414,45 +419,33 @@ export default function Dashboard() {
                                         <ChevronLeft className="w-4 h-4" /> Back to Assets
                                     </button>
                                     <Card className="p-12 md:p-16 rounded-[3rem] border-none shadow-xl bg-white space-y-12">
-                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                                            <div className="space-y-8">
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase text-foreground/30">Banner Title</label>
-                                                    <input type="text" placeholder="MAIN HEADING" className="w-full bg-gray-50 rounded-2xl px-6 py-4 outline-none border border-transparent focus:border-primary transition-all font-black text-xs tracking-widest" value={bannerForm.title} onChange={e => setBannerForm({ ...bannerForm, title: e.target.value })} />
+                                        <div className="max-w-xl">
+                                            <div className="space-y-4">
+                                                <label className="text-[10px] font-black uppercase text-foreground/30">Banner Media</label>
+                                                <div className="flex gap-2 p-1 bg-gray-100 rounded-full w-fit">
+                                                    <button onClick={() => setBannerForm({ ...bannerForm, method: 'link' })} className={cn("px-6 py-2 rounded-full text-[8px] font-black uppercase tracking-widest transition-all", bannerForm.method === 'link' ? 'bg-primary text-white shadow-md' : 'text-foreground/40')}>URL Link</button>
+                                                    <button onClick={() => setBannerForm({ ...bannerForm, method: 'file' })} className={cn("px-6 py-2 rounded-full text-[8px] font-black uppercase tracking-widest transition-all", bannerForm.method === 'file' ? 'bg-primary text-white shadow-md' : 'text-foreground/40')}>Local File</button>
                                                 </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase text-foreground/30">Subtitle / Caption</label>
-                                                    <input type="text" placeholder="SUPPORTING TEXT" className="w-full bg-gray-50 rounded-2xl px-6 py-4 outline-none border border-transparent focus:border-primary transition-all font-black text-xs tracking-widest" value={bannerForm.subtitle} onChange={e => setBannerForm({ ...bannerForm, subtitle: e.target.value })} />
-                                                </div>
-                                            </div>
-                                            <div className="space-y-8">
-                                                <div className="space-y-4">
-                                                    <label className="text-[10px] font-black uppercase text-foreground/30">Banner Media</label>
-                                                    <div className="flex gap-2 p-1 bg-gray-100 rounded-full w-fit">
-                                                        <button onClick={() => setBannerForm({ ...bannerForm, method: 'link' })} className={cn("px-6 py-2 rounded-full text-[8px] font-black uppercase tracking-widest transition-all", bannerForm.method === 'link' ? 'bg-primary text-white shadow-md' : 'text-foreground/40')}>URL Link</button>
-                                                        <button onClick={() => setBannerForm({ ...bannerForm, method: 'file' })} className={cn("px-6 py-2 rounded-full text-[8px] font-black uppercase tracking-widest transition-all", bannerForm.method === 'file' ? 'bg-primary text-white shadow-md' : 'text-foreground/40')}>Local File</button>
+                                                {bannerForm.method === 'link' ? (
+                                                    <div key="link-input" className="relative">
+                                                        <input type="text" placeholder="HTTPS://UNSPLASH.COM/PHOTO..." className="w-full bg-gray-50 rounded-2xl px-6 py-4 outline-none border border-transparent focus:border-primary transition-all font-black text-xs tracking-widest pr-16" value={bannerForm.image || ''} onChange={e => setBannerForm({ ...bannerForm, image: e.target.value })} />
+                                                        <LinkIcon className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20" />
                                                     </div>
-                                                    {bannerForm.method === 'link' ? (
-                                                        <div className="relative">
-                                                            <input type="text" placeholder="HTTPS://UNSPLASH.COM/PHOTO..." className="w-full bg-gray-50 rounded-2xl px-6 py-4 outline-none border border-transparent focus:border-primary transition-all font-black text-xs tracking-widest pr-16" value={bannerForm.image} onChange={e => setBannerForm({ ...bannerForm, image: e.target.value })} />
-                                                            <LinkIcon className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-foreground/20" />
-                                                        </div>
-                                                    ) : (
-                                                        <div onClick={() => fileInputRef.current?.click()} className="w-full h-32 rounded-2xl border-2 border-dashed border-foreground/10 flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-primary/5 transition-all group relative">
-                                                            <input type="file" hidden ref={fileInputRef} accept="image/*" onChange={e => handleFileUpload(e, (url) => setBannerForm({ ...bannerForm, image: url }))} />
-                                                            {bannerForm.image ? (
-                                                                <div className="relative w-full h-full p-2">
-                                                                    <Image src={bannerForm.image} alt="prev" fill className="object-cover rounded-xl" />
-                                                                </div>
-                                                            ) : (
-                                                                <>
-                                                                    <Upload className="w-6 h-6 text-foreground/20 group-hover:text-primary transition-colors mb-2" />
-                                                                    <span className="text-[8px] font-black uppercase tracking-widest text-foreground/40">Drop or Click to Upload</span>
-                                                                </>
-                                                            )}
-                                                        </div>
-                                                    )}
-                                                </div>
+                                                ) : (
+                                                    <div key="file-input" onClick={() => fileInputRef.current?.click()} className="w-full h-32 rounded-2xl border-2 border-dashed border-foreground/10 flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-primary/5 transition-all group relative">
+                                                        <input type="file" hidden ref={fileInputRef} accept="image/*" onChange={e => handleFileUpload(e, (url) => setBannerForm({ ...bannerForm, image: url }))} />
+                                                        {bannerForm.image ? (
+                                                            <div className="relative w-full h-full p-2">
+                                                                <Image src={bannerForm.image} alt="prev" fill className="object-cover rounded-xl" />
+                                                            </div>
+                                                        ) : (
+                                                            <>
+                                                                <Upload className="w-6 h-6 text-foreground/20 group-hover:text-primary transition-colors mb-2" />
+                                                                <span className="text-[8px] font-black uppercase tracking-widest text-foreground/40">Drop or Click to Upload</span>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                         <div className="flex justify-end gap-4 pt-8 border-t border-gray-100 font-black">
@@ -490,7 +483,7 @@ export default function Dashboard() {
                                                         <Image src={banner.image} alt={banner.title} fill className="object-cover group-hover:scale-105 transition-transform duration-700" />
                                                         <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
                                                         <div className="absolute inset-0 p-8 flex flex-col justify-end text-white text-left">
-                                                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-primary mb-2">Slide {banner.id}</span>
+                                                            <span className="text-[8px] font-black uppercase tracking-[0.3em] text-primary mb-2">Slide {banner.id || banner._id?.slice(-4)}</span>
                                                             <h4 className="text-xl font-black uppercase tracking-tighter leading-none mb-2">{banner.title}</h4>
                                                             <p className="text-[10px] font-medium text-white/60 tracking-widest uppercase italic">{banner.subtitle}</p>
                                                         </div>

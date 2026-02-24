@@ -3,8 +3,8 @@ import mongoose, { Schema, model, models } from 'mongoose';
 // Banner Schema
 const BannerSchema = new Schema({
     page: { type: String, required: true },
-    title: { type: String, required: true },
-    subtitle: { type: String },
+    title: { type: String, default: '' },
+    subtitle: { type: String, default: '' },
     image: { type: String, required: true },
 });
 

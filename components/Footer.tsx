@@ -46,7 +46,7 @@ export default function Footer() {
               </div>
             </Link>
             <p className="text-sm font-medium text-white/40 leading-relaxed max-w-sm uppercase tracking-widest">
-              Advancing the Indian label manufacturing industry through innovation, education, and global recognition since 1999.
+              Advancing the Indian label manufacturing industry through innovation, education, and global recognition since 2002.
             </p>
             <div className="flex gap-4">
               {[
