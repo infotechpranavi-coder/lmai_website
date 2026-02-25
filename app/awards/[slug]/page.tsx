@@ -3,11 +3,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { awardsData } from '../data';
+import dbConnect from '@/lib/mongodb';
+import { Award } from '@/lib/models';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
     const resolvedParams = await params;
-    const award = awardsData.find(a => a.slug === resolvedParams.slug);
+    await dbConnect();
+    const award: any = await Award.findById(resolvedParams.slug).lean();
     if (!award) return { title: 'Award Not Found | LMAI' };
 
     return {
@@ -16,15 +18,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
 }
 
-export function generateStaticParams() {
-    return awardsData.map((award) => ({
-        slug: award.slug,
-    }));
-}
-
 export default async function AwardDetail({ params }: { params: Promise<{ slug: string }> }) {
     const resolvedParams = await params;
-    const award = awardsData.find(a => a.slug === resolvedParams.slug);
+    await dbConnect();
+
+    let award: any = null;
+    try {
+        award = await Award.findById(resolvedParams.slug).lean();
+    } catch (err) {
+        // Handle invalid IDs
+    }
 
     if (!award) {
         notFound();
@@ -52,7 +55,7 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
                         <span className="text-white">{award.title}</span>
                     </div>
                     <h1 className="text-4xl md:text-7xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-none max-w-5xl">
-                        {award.title.split(' ').map((word, i, arr) => (
+                        {award.title.split(' ').map((word: string, i: number, arr: string[]) => (
                             <span key={i} className={i === arr.length - 1 ? "text-primary italic" : ""}>
                                 {word}{" "}
                             </span>
@@ -79,39 +82,41 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
             {/* ──────────────────────────────────────────────────────────
           PHOTO GALLERY
       ────────────────────────────────────────────────────────── */}
-            <section className="py-24 px-4 sm:px-6 lg:px-24 bg-[#0a0a0b] text-white">
-                <div className="max-w-7xl mx-auto">
-                    <div className="mb-20 text-center">
-                        <span className="text-primary text-[10px] font-black uppercase tracking-[0.4em] block mb-4">Visual Records</span>
-                        <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none">
-                            Awards <span className="text-primary italic">Gallery</span>
-                        </h2>
-                    </div>
+            {award.gallery && award.gallery.length > 0 && (
+                <section className="py-24 px-4 sm:px-6 lg:px-24 bg-[#0a0a0b] text-white">
+                    <div className="max-w-7xl mx-auto">
+                        <div className="mb-20 text-center">
+                            <span className="text-primary text-[10px] font-black uppercase tracking-[0.4em] block mb-4">Visual Records</span>
+                            <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none">
+                                Awards <span className="text-primary italic">Gallery</span>
+                            </h2>
+                        </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {award.gallery.map((photo, idx) => (
-                            <div key={idx} className="relative aspect-video rounded-[2rem] overflow-hidden group">
-                                <Image
-                                    src={photo}
-                                    alt={`${award.title} photo ${idx + 1}`}
-                                    fill
-                                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                                />
-                                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-                            </div>
-                        ))}
-                    </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {award.gallery.map((photo: string, idx: number) => (
+                                <div key={idx} className="relative aspect-video rounded-[2rem] overflow-hidden group">
+                                    <Image
+                                        src={photo}
+                                        alt={`${award.title} photo ${idx + 1}`}
+                                        fill
+                                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                                    />
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                                </div>
+                            ))}
+                        </div>
 
-                    <div className="mt-24 text-center">
-                        <Button variant="outline" asChild className="rounded-full bg-transparent border-white/20 text-white hover:bg-white hover:text-black font-bold uppercase tracking-widest text-xs h-14 px-10">
-                            <Link href="/awards">
-                                <ArrowLeft className="w-4 h-4 mr-2" />
-                                Back to All Awards
-                            </Link>
-                        </Button>
+                        <div className="mt-24 text-center">
+                            <Button variant="outline" asChild className="rounded-full bg-transparent border-white/20 text-white hover:bg-white hover:text-black font-bold uppercase tracking-widest text-xs h-14 px-10">
+                                <Link href="/awards">
+                                    <ArrowLeft className="w-4 h-4 mr-2" />
+                                    Back to All Awards
+                                </Link>
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            )}
 
         </div>
     );

@@ -1,62 +1,37 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Play, Calendar, User, ArrowRight, Video } from 'lucide-react';
+import { Play, Calendar, User, ArrowRight, Video, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Presentations() {
-  const presentations = [
-    {
-      title: "The Future of Label Manufacturing 2024",
-      speaker: "Rajish Verma",
-      date: "March 15, 2024",
-      description: "A deep dive into the technological transformations and automation trends shaping the Indian label industry.",
-      thumbnail: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80",
-      category: "Keynote"
-    },
-    {
-      title: "Sustainability in Flexible Packaging",
-      speaker: "Ananya Sharma",
-      date: "February 28, 2024",
-      description: "Exploring eco-friendly materials and waste reduction strategies for modern packaging solutions.",
-      thumbnail: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&q=80",
-      category: "Technical Talk"
-    },
-    {
-      title: "Global Supply Chain Challenges in Printing",
-      speaker: "Amit Goel",
-      date: "January 10, 2024",
-      description: "Addressing the logistics and raw material hurdles faced by manufacturers in the current global climate.",
-      thumbnail: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80",
-      category: "Panel Discussion"
-    },
-    {
-      title: "Innovation in UV Leading Technologies",
-      speaker: "Dr. Sanjay Gupta",
-      date: "December 5, 2023",
-      description: "Technical insights into the latest UV curing systems and their efficiency in high-speed label presses.",
-      thumbnail: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&q=80",
-      category: "Workshop"
-    },
-    {
-      title: "Design Thinking for Label Aesthetics",
-      speaker: "Priya Malhotra",
-      date: "November 20, 2023",
-      description: "How creative design and material choice influence consumer behavior at the retail shelf.",
-      thumbnail: "https://images.unsplash.com/photo-1556761175-4b46a572b786?w=800&q=80",
-      category: "Design Seminar"
-    },
-    {
-      title: "LMAI Secretariat: Roadmap 2025",
-      speaker: "Kuldip Goel",
-      date: "October 12, 2023",
-      description: "Defining the long-term vision and membership benefits for the Label Manufacturers Association of India.",
-      thumbnail: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=800&q=80",
-      category: "Strategy"
-    }
-  ];
+  const [presentations, setPresentations] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/dashboard/presentations')
+      .then(res => res.json())
+      .then(data => {
+        setPresentations(data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch presentations", err);
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-screen bg-background flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+        <p className="text-sm font-black uppercase tracking-widest text-foreground/40">Loading Presentations...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-background selection:bg-primary selection:text-white">
@@ -101,34 +76,50 @@ export default function Presentations() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-            {presentations.map((item, idx) => (
-              <div key={idx} className="group cursor-pointer">
-                <div className="relative aspect-video w-full overflow-hidden rounded-[2rem] bg-[#0a0a0b] shadow-lg group-hover:shadow-2xl transition-all duration-500">
-                  <Image
-                    src={item.thumbnail}
-                    alt={item.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100"
-                  />
+          {presentations.length === 0 ? (
+            <div className="text-center py-24 bg-secondary/20 rounded-[3rem]">
+              <p className="text-foreground/40 font-black uppercase tracking-[0.2em]">No presentations available in the archive yet.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {presentations.map((item, idx) => (
+                <a href={item.link} target="_blank" rel="noopener noreferrer" key={item._id || idx} className="group cursor-pointer">
+                  <div className="relative aspect-video w-full overflow-hidden rounded-[2rem] bg-[#0a0a0b] shadow-lg group-hover:shadow-2xl transition-all duration-500">
+                    <Image
+                      src={item.image || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80"}
+                      alt={item.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-80 group-hover:opacity-100"
+                    />
 
-                  {/* Play Button Overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-500">
-                      <Play className="w-6 h-6 text-white ml-1 fill-white" />
+                    {/* Play Button Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-500">
+                        <Play className="w-6 h-6 text-white ml-1 fill-white" />
+                      </div>
                     </div>
                   </div>
 
-                </div>
-
-                <div className="mt-8">
-                  <h3 className="text-xl font-black uppercase tracking-tighter leading-tight group-hover:text-primary transition-colors line-clamp-2 text-center">
-                    {item.title}
-                  </h3>
-                </div>
-              </div>
-            ))}
-          </div>
+                  <div className="mt-8 space-y-2">
+                    <div className="flex items-center justify-center gap-3">
+                      <span className="text-[8px] font-black uppercase tracking-widest bg-primary/10 text-primary px-3 py-1 rounded-full">
+                        {item.category}
+                      </span>
+                      <span className="text-[8px] font-bold text-foreground/30 flex items-center gap-1 uppercase tracking-widest">
+                        <Calendar className="w-3 h-3" /> {item.date}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-black uppercase tracking-tighter leading-tight group-hover:text-primary transition-colors line-clamp-2 text-center">
+                      {item.title}
+                    </h3>
+                    <p className="text-[10px] font-bold text-foreground/40 text-center uppercase tracking-widest">
+                      By {item.speaker}
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

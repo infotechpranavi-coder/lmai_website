@@ -1,13 +1,38 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Trophy, ArrowUpRight, Star } from 'lucide-react';
+import { Trophy, ArrowUpRight, Star, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { awardsData } from './data';
 
 export default function Awards() {
+  const [awards, setAwards] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/dashboard/awards')
+      .then(res => res.json())
+      .then(data => {
+        setAwards(data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch awards", err);
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-screen bg-background flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+        <p className="text-sm font-black uppercase tracking-widest text-foreground/40">Loading Awards...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full bg-background selection:bg-primary selection:text-white">
 
@@ -49,29 +74,40 @@ export default function Awards() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {awardsData.map((award, idx) => (
-              <Link href={`/awards/${award.slug}`} key={idx} className="block group">
-                <div className="overflow-hidden transition-all duration-500">
-                  <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl md:rounded-3xl">
-                    <Image
-                      src={award.image}
-                      alt={award.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-700"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
-                  </div>
+          {awards.length === 0 ? (
+            <div className="text-center py-24 bg-secondary/20 rounded-[3rem]">
+              <p className="text-foreground/40 font-black uppercase tracking-[0.2em]">No awards recorded in the gallery yet.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {awards.map((award, idx) => (
+                <Link href={`/awards/${award._id}`} key={award._id || idx} className="block group">
+                  <div className="overflow-hidden transition-all duration-500">
+                    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl md:rounded-3xl shadow-lg group-hover:shadow-2xl transition-all duration-500">
+                      <Image
+                        src={award.image}
+                        alt={award.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
+                    </div>
 
-                  <div className="py-6 px-2">
-                    <h3 className="text-lg font-black uppercase tracking-tighter group-hover:text-primary transition-colors leading-tight line-clamp-2 text-center">
-                      {award.title}
-                    </h3>
+                    <div className="py-6 px-2">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">
+                          {award.category}
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-black uppercase tracking-tighter group-hover:text-primary transition-colors leading-tight line-clamp-2 text-center">
+                        {award.title}
+                      </h3>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

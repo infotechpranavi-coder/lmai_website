@@ -1,34 +1,32 @@
 "use client";
 
-import { useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Loader2 } from 'lucide-react';
 
 export default function Management() {
-  const leadershipData = useMemo(() => ({
-    boardOfDirectors: [
-      { name: "Sandeep Zaveri", title: "President", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop" },
-      { name: "Kuldip Goel", title: "Honorary Secretary", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=500&fit=crop" },
-      { name: "Rajesh Nema", title: "Vice President", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop" },
-      { name: "Manish Desai", title: "Treasurer", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=500&fit=crop" },
-      { name: "Harveer Sahni", title: "LMAI Force Chair", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&h=500&fit=crop" },
-      { name: "Gururaj Ballarwad", title: "Joint Secretary", image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=400&h=500&fit=crop" },
-      { name: "Vivek Kapoor", title: "Director", image: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400&h=500&fit=crop" },
-      { name: "Dinesh Mahajan", title: "Director", image: "https://images.unsplash.com/photo-1552058544-a2b7ca42702f?w=400&h=500&fit=crop" }
-    ],
-    lmaiForce: [
-      { name: "Amit Goel", title: "Core Committee", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&h=500&fit=crop" },
-      { name: "Priyanka Malhotra", title: "Core Committee", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&h=500&fit=crop" },
-      { name: "Rahul Soni", title: "Regional Lead", image: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&h=500&fit=crop" },
-      { name: "Sneha Rao", title: "Regional Lead", image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&h=500&fit=crop" }
-    ],
-    pastPresidents: [
-      { name: "Vivek Kapoor", title: "Past President (2020-2022)", image: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400&h=500&fit=crop" },
-      { name: "Kuldip Goel", title: "Past President (2018-2020)", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&h=500&fit=crop" },
-      { name: "Rajesh Nema", title: "Past President (2016-2018)", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=500&fit=crop" },
-      { name: "Dinesh Mahajan", title: "Past President (2014-2016)", image: "https://images.unsplash.com/photo-1552058544-a2b7ca42702f?w=400&h=500&fit=crop" }
-    ]
-  }), []);
+  const [members, setMembers] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/dashboard/members')
+      .then(res => res.json())
+      .then(data => {
+        setMembers(data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch members", err);
+        setIsLoading(false);
+      });
+  }, []);
+
+  const categorizedMembers = {
+    boardOfDirectors: members.filter(m => m.category === 'boardOfDirectors'),
+    lmaiForce: members.filter(m => m.category === 'lmaiForce'),
+    pastPresidents: members.filter(m => m.category === 'pastPresidents'),
+  };
 
   const SectionHeader = ({ subtitle, title }: { subtitle: string, title: string }) => (
     <div className="mb-20 space-y-4">
@@ -41,12 +39,12 @@ export default function Management() {
     </div>
   );
 
-  const MemberCard = ({ person }: { person: { name: string, title: string, image: string } }) => (
+  const MemberCard = ({ person }: { person: { name: string, title?: string, designation?: string, image: string } }) => (
     <div className="group block">
       <div className="overflow-hidden transition-all duration-500">
         <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl md:rounded-3xl shadow-lg group-hover:shadow-2xl transition-all duration-500">
           <Image
-            src={person.image}
+            src={person.image || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=500&fit=crop"}
             alt={person.name}
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-700 grayscale hover:grayscale-0"
@@ -54,17 +52,26 @@ export default function Management() {
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500" />
         </div>
 
-        <div className="py-8 px-2 space-y-2 text-center">
-          <h3 className="text-xl font-black uppercase tracking-tighter group-hover:text-primary transition-colors leading-tight">
+        <div className="py-6 px-1 space-y-1 text-center">
+          <h3 className="text-lg font-black uppercase tracking-tighter group-hover:text-primary transition-colors leading-tight">
             {person.name}
           </h3>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">
-            {person.title}
+          <p className="text-[9px] font-black uppercase tracking-[0.2em] text-foreground/40">
+            {person.title || person.designation}
           </p>
         </div>
       </div>
     </div>
   );
+
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-screen bg-background flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+        <p className="text-sm font-black uppercase tracking-widest text-foreground/40">Loading Leadership...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-background selection:bg-primary selection:text-white">
@@ -97,44 +104,58 @@ export default function Management() {
       {/* ──────────────────────────────────────────────────────────
           SECTION 1: BOARD OF DIRECTORS
       ────────────────────────────────────────────────────────── */}
-      <section className="py-32 px-4 sm:px-6 lg:px-24 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader subtitle="Executive Governance" title="Board of Directors" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
-            {leadershipData.boardOfDirectors.map((person, idx) => (
-              <MemberCard key={idx} person={person} />
-            ))}
+      {categorizedMembers.boardOfDirectors.length > 0 && (
+        <section className="py-32 px-4 sm:px-6 lg:px-24 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeader subtitle="Executive Governance" title="Board of Directors" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 sm:gap-x-6 gap-y-10">
+              {categorizedMembers.boardOfDirectors.map((person, idx) => (
+                <MemberCard key={person._id || idx} person={person} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ──────────────────────────────────────────────────────────
-          SECTION 2: LMAI FORCE (2024-2026)
+          SECTION 2: LMAI FORCE
       ────────────────────────────────────────────────────────── */}
-      <section className="py-32 px-4 sm:px-6 lg:px-24 bg-secondary/10">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader subtitle="Next Generation Leaders" title="LMAI Force (2024-2026)" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
-            {leadershipData.lmaiForce.map((person, idx) => (
-              <MemberCard key={idx} person={person} />
-            ))}
+      {categorizedMembers.lmaiForce.length > 0 && (
+        <section className="py-32 px-4 sm:px-6 lg:px-24 bg-secondary/10">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeader subtitle="Next Generation Leaders" title="LMAI Force" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 sm:gap-x-6 gap-y-10">
+              {categorizedMembers.lmaiForce.map((person, idx) => (
+                <MemberCard key={person._id || idx} person={person} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* ──────────────────────────────────────────────────────────
           SECTION 3: PAST PRESIDENTS
       ────────────────────────────────────────────────────────── */}
-      <section className="py-32 px-4 sm:px-6 lg:px-24 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <SectionHeader subtitle="Legacy & Vision" title="Past Presidents" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
-            {leadershipData.pastPresidents.map((person, idx) => (
-              <MemberCard key={idx} person={person} />
-            ))}
+      {categorizedMembers.pastPresidents.length > 0 && (
+        <section className="py-32 px-4 sm:px-6 lg:px-24 bg-white">
+          <div className="max-w-7xl mx-auto">
+            <SectionHeader subtitle="Legacy & Vision" title="Past Presidents" />
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-x-4 sm:gap-x-6 gap-y-10">
+              {categorizedMembers.pastPresidents.map((person, idx) => (
+                <MemberCard key={person._id || idx} person={person} />
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {members.length === 0 && (
+        <section className="py-32 px-4 sm:px-6 lg:px-24 bg-white text-center">
+          <div className="max-w-xl mx-auto py-24 bg-secondary/20 rounded-[3rem]">
+            <p className="text-foreground/40 font-black uppercase tracking-[0.2em]">Leadership directory is currently being updated.</p>
+          </div>
+        </section>
+      )}
 
     </div>
   );

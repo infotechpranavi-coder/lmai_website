@@ -165,6 +165,12 @@ export default function Dashboard() {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        if (file.size > 10 * 1024 * 1024) {
+            toast.error("File exceeds 10MB limit. Please compress or provide an external URL.");
+            e.target.value = '';
+            return;
+        }
+
         setIsLoading(true);
         const formData = new FormData();
         formData.append('file', file);
@@ -188,6 +194,13 @@ export default function Dashboard() {
     const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
         if (!files || !currentEvent) return;
+
+        const largeFiles = Array.from(files).filter(f => f.size > 10 * 1024 * 1024);
+        if (largeFiles.length > 0) {
+            toast.error("One or more files exceed the 10MB limit.");
+            e.target.value = '';
+            return;
+        }
 
         setIsLoading(true);
         try {
@@ -704,6 +717,14 @@ export default function Dashboard() {
                                                         <input type="file" hidden multiple ref={galleryInputRef} accept="image/*" onChange={async (e) => {
                                                             const files = e.target.files;
                                                             if (!files || !currentAward) return;
+
+                                                            const largeFiles = Array.from(files).filter(f => f.size > 10 * 1024 * 1024);
+                                                            if (largeFiles.length > 0) {
+                                                                toast.error("One or more files exceed the 10MB limit.");
+                                                                e.target.value = '';
+                                                                return;
+                                                            }
+
                                                             setIsLoading(true);
                                                             try {
                                                                 const uploadPromises = Array.from(files).map(async (file) => {
@@ -820,16 +841,7 @@ export default function Dashboard() {
                                                         <input type="file" hidden ref={pdfInputRef} accept=".pdf" onChange={e => handleFileUpload(e, (url) => setCurrentNewsletter({ ...currentNewsletter, file: url }))} />
                                                     </div>
                                                 </div>
-                                                <div className="space-y-4 text-left font-black">
-                                                    <label className="text-[10px] uppercase tracking-[0.2em] text-foreground/30">Preview Image</label>
-                                                    <div className="flex gap-4">
-                                                        <div className="flex-grow">
-                                                            <input type="text" placeholder="PREVIEW JPG URL" value={currentNewsletter?.image || ''} onChange={e => setCurrentNewsletter({ ...currentNewsletter, image: e.target.value })} className="w-full bg-gray-50 rounded-2xl px-6 py-4 outline-none border border-transparent focus:border-primary transition-all text-xs tracking-widest pr-12" />
-                                                        </div>
-                                                        <button onClick={() => fileInputRef.current?.click()} className="h-14 w-14 rounded-2xl bg-secondary/20 text-black flex items-center justify-center hover:bg-secondary hover:text-black transition-all border border-black/5"><ImagePlus className="w-5 h-5" /></button>
-                                                        <input type="file" hidden ref={fileInputRef} accept="image/*" onChange={e => handleFileUpload(e, (url) => setCurrentNewsletter({ ...currentNewsletter, image: url }))} />
-                                                    </div>
-                                                </div>
+
                                             </div>
                                         </div>
                                         <div className="flex justify-end gap-4 pt-8 border-t border-gray-100 font-black">
@@ -1021,6 +1033,7 @@ export default function Dashboard() {
                                                             <input type="text" placeholder="IMAGE URL" value={currentMember?.image || ''} onChange={e => setCurrentMember({ ...currentMember, image: e.target.value })} className="w-full bg-gray-50 rounded-2xl px-6 py-4 outline-none border border-transparent focus:border-primary transition-all text-xs tracking-widest pr-12" />
                                                         </div>
                                                         <button onClick={() => fileInputRef.current?.click()} className="h-14 w-14 rounded-2xl bg-secondary/20 text-black flex items-center justify-center hover:bg-secondary hover:text-black transition-all border border-black/5"><ImagePlus className="w-5 h-5" /></button>
+                                                        <input type="file" hidden ref={fileInputRef} accept="image/*" onChange={e => handleFileUpload(e, (url) => setCurrentMember({ ...currentMember, image: url }))} />
                                                     </div>
                                                 </div>
                                             </div>

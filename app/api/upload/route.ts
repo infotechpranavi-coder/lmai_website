@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {
                     folder: process.env.CLOUDINARY_FOLDER || 'lmai',
+                    resource_type: 'auto',
                 },
                 (error, result) => {
                     if (error) {

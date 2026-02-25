@@ -1,61 +1,42 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Calendar, MapPin, Users, ArrowRight, ArrowUpRight, Clock } from 'lucide-react';
+import { Calendar, MapPin, Users, ArrowRight, ArrowUpRight, Clock, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { pastEvents } from './data';
-
 
 export default function Events() {
-  const upcomingEvents = [
-    {
-      title: 'LMAI Annual Conference 2024',
-      date: 'March 15-17, 2024',
-      time: '09:00 AM - 05:00 PM',
-      location: 'Navi Mumbai Convention Center',
-      attendees: '2,500+ attendees',
-      description: 'Our flagship event bringing together industry captains, innovators, and professionals for three days of learning, networking, and inspiration.',
-      image: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80',
-      category: 'Conference'
-    },
-    {
-      title: 'Label Awards & Competition',
-      date: 'April 5, 2024',
-      time: '06:00 PM - 11:00 PM',
-      location: 'Grand Hyatt, Mumbai',
-      attendees: '500+ attendees',
-      description: 'Celebrating top class international quality in label manufacturing. Winners are recognized nationally and supported for the World Label Competition.',
-      image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80',
-      category: 'Awards'
-    },
-    {
-      title: 'Technical Innovators Workshop',
-      date: 'May 10-12, 2024',
-      time: '10:00 AM - 04:00 PM',
-      location: 'LMAI Institute of Technology',
-      attendees: '300+ attendees',
-      description: 'Intensive hands-on workshops covering the latest trends, tools, and methodologies in label innovation and creative problem-solving.',
-      image: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&q=80',
-      category: 'Workshop'
-    },
-    {
-      title: 'Global Trade & Export Seminar',
-      date: 'June 7, 2024',
-      time: '09:30 AM - 02:30 PM',
-      location: 'Executive Training Institute, Delhi',
-      attendees: '200+ attendees',
-      description: 'Advanced seminar for manufacturers aiming to cater to international clients, focusing on global technology, quality, and regulations.',
-      image: 'https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=800&q=80',
-      category: 'Seminar'
-    },
-  ];
-
-
-
+  const [upcomingEvents, setUpcomingEvents] = useState<any[]>([]);
+  const [pastEvents, setPastEvents] = useState<any[]>([]);
   const [isGridView, setIsGridView] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/dashboard/events')
+      .then(res => res.json())
+      .then(data => {
+        const upcoming = data.filter((e: any) => e.type === 'upcoming');
+        const past = data.filter((e: any) => e.type === 'past');
+        setUpcomingEvents(upcoming);
+        setPastEvents(past);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch events", err);
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-screen bg-background flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+        <p className="text-sm font-black uppercase tracking-widest text-foreground/40">Loading Events...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-background selection:bg-primary selection:text-white">
@@ -97,54 +78,52 @@ export default function Events() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {upcomingEvents.map((event, idx) => (
-              <Card key={idx} className="group overflow-hidden rounded-[2.5rem] border-border shadow-sm hover:shadow-2xl transition-all duration-500 bg-white">
-                <div className="relative h-64 w-full overflow-hidden">
-                  <Image
-                    src={event.image}
-                    alt={event.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest text-primary shadow-sm">
-                    {event.category}
-                  </div>
-                </div>
-
-                <div className="p-10">
-                  <h3 className="text-2xl font-black mb-4 uppercase tracking-tighter group-hover:text-primary transition-colors">{event.title}</h3>
-                  <p className="text-sm font-medium text-foreground/60 mb-8 line-clamp-3 leading-relaxed">
-                    {event.description}
-                  </p>
-
-                  <div className="space-y-4 mb-10">
-                    <div className="flex items-center gap-3 text-xs font-bold text-foreground/70 uppercase tracking-wide">
-                      <Calendar className="w-4 h-4 text-primary" />
-                      {event.date}
-                    </div>
-                    <div className="flex items-center gap-3 text-xs font-bold text-foreground/70 uppercase tracking-wide">
-                      <Clock className="w-4 h-4 text-primary" />
-                      {event.time}
-                    </div>
-                    <div className="flex items-center gap-3 text-xs font-bold text-foreground/70 uppercase tracking-wide">
-                      <MapPin className="w-4 h-4 text-primary" />
-                      {event.location}
+          {upcomingEvents.length === 0 ? (
+            <div className="text-center py-20 bg-secondary/20 rounded-[3rem]">
+              <p className="text-foreground/50 font-black uppercase tracking-widest">No upcoming events scheduled at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              {upcomingEvents.map((event, idx) => (
+                <Card key={event._id || idx} className="group overflow-hidden rounded-[2.5rem] border-border shadow-sm hover:shadow-2xl transition-all duration-500 bg-white">
+                  <div className="relative h-64 w-full overflow-hidden">
+                    <Image
+                      src={event.coverImage || 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80'}
+                      alt={event.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest text-primary shadow-sm">
+                      {event.category || 'Event'}
                     </div>
                   </div>
 
-                  <div className="pt-6 border-t border-border flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-xs font-black text-foreground/40 uppercase tracking-widest">
-                      <Users className="w-4 h-4" /> {event.attendees}
-                    </span>
-                    <Button className="rounded-full bg-primary hover:bg-primary/90 text-white font-bold h-10 w-10 p-0 flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <ArrowUpRight className="w-5 h-5" />
-                    </Button>
+                  <div className="p-10">
+                    <h3 className="text-2xl font-black mb-4 uppercase tracking-tighter group-hover:text-primary transition-colors">{event.title}</h3>
+                    <p className="text-sm font-medium text-foreground/60 mb-8 line-clamp-3 leading-relaxed">
+                      {event.description}
+                    </p>
+
+                    <div className="space-y-4 mb-10">
+                      <div className="flex items-center gap-3 text-xs font-bold text-foreground/70 uppercase tracking-wide">
+                        <Calendar className="w-4 h-4 text-primary" />
+                        {event.date}
+                      </div>
+                      {/* Omit Time and Location if they are not stored in the dynamic DB schema, or implement fallbacks */}
+                    </div>
+
+                    <div className="pt-6 border-t border-border flex flex-wrap items-center justify-between gap-4">
+                      <Link href={`/events/${event._id || event.slug}`} className="w-full sm:w-auto">
+                        <Button className="rounded-full w-full sm:w-auto bg-primary hover:bg-primary/90 text-white font-bold h-12 px-8 flex items-center justify-center group-hover:scale-105 transition-transform shadow-lg shadow-primary/20 text-[10px] uppercase tracking-widest">
+                          View Details <ArrowUpRight className="w-5 h-5 ml-2" />
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            ))}
-          </div>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -176,26 +155,32 @@ export default function Events() {
                 Past <span className="text-primary italic">Highlights</span>
               </h2>
             </div>
-            <Button
-              variant="outline"
-              onClick={() => setIsGridView(!isGridView)}
-              className="rounded-full bg-transparent border-white/20 text-white hover:bg-white hover:text-black font-bold uppercase tracking-widest text-xs h-12 px-8"
-            >
-              {isGridView ? 'View As Slider' : 'View Full Gallery'}
-            </Button>
+            {pastEvents.length > 0 && (
+              <Button
+                variant="outline"
+                onClick={() => setIsGridView(!isGridView)}
+                className="rounded-full bg-transparent border-white/20 text-white hover:bg-white hover:text-black font-bold uppercase tracking-widest text-xs h-12 px-8"
+              >
+                {isGridView ? 'View As Slider' : 'View Full Gallery'}
+              </Button>
+            )}
           </div>
 
-          {isGridView ? (
+          {pastEvents.length === 0 ? (
+            <div className="text-center py-20 bg-white/5 rounded-[3rem]">
+              <p className="text-white/50 font-black uppercase tracking-widest">No past events to display.</p>
+            </div>
+          ) : isGridView ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10 w-full">
               {pastEvents.map((photo, idx) => (
-                <Link href={`/events/${photo.slug}`} key={idx} className="relative aspect-[4/5] rounded-[2rem] overflow-hidden group cursor-pointer block">
+                <Link href={`/events/${photo._id}`} key={photo._id || idx} className="relative aspect-[4/5] rounded-[2rem] overflow-hidden group cursor-pointer block border border-white/10">
                   <Image
-                    src={photo.image}
+                    src={photo.coverImage || 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80'}
                     alt={photo.title}
                     fill
                     className="object-cover group-hover:scale-110 group-hover:blur-sm transition-all duration-700 grayscale group-hover:grayscale-0"
                   />
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
+                  <div className="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-colors" />
                   <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col items-center text-center transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
                     <h4 className="text-xl font-black uppercase tracking-tight mb-4">{photo.title}</h4>
                     <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
@@ -210,14 +195,14 @@ export default function Events() {
               <div className="animate-gallery-slide gap-6 pb-12">
                 {/* Double the array to allow for a seamless infinite loop */}
                 {[...pastEvents, ...pastEvents].map((photo, idx) => (
-                  <Link href={`/events/${photo.slug}`} key={idx} className="relative w-[300px] md:w-[400px] aspect-[4/5] flex-shrink-0 rounded-[2rem] overflow-hidden group cursor-pointer block">
+                  <Link href={`/events/${photo._id}`} key={`${photo._id}-${idx}`} className="relative w-[300px] md:w-[400px] aspect-[4/5] flex-shrink-0 rounded-[2rem] overflow-hidden group cursor-pointer block border border-white/10">
                     <Image
-                      src={photo.image}
+                      src={photo.coverImage || 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80'}
                       alt={photo.title}
                       fill
                       className="object-cover group-hover:scale-110 group-hover:blur-sm transition-all duration-700 grayscale group-hover:grayscale-0"
                     />
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
+                    <div className="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-colors" />
                     <div className="absolute inset-x-0 bottom-0 p-8 flex flex-col items-center text-center transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
                       <h4 className="text-xl font-black uppercase tracking-tight mb-4">{photo.title}</h4>
                       <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
@@ -231,8 +216,6 @@ export default function Events() {
           )}
         </div>
       </section>
-
-
 
     </div>
   );

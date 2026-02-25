@@ -1,56 +1,37 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { FileText, Download, Calendar, Mail, ArrowRight } from 'lucide-react';
+import { FileText, Download, Calendar, Mail, ArrowRight, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Newsletters() {
-  const newsletters = [
-    {
-      title: "LMAI Monthly Digest - March 2024",
-      date: "March 1, 2024",
-      description: "Covering the annual conference highlights, technical innovations in label manufacturing, and upcoming member initiatives.",
-      fileSize: "2.4 MB",
-      category: "Monthly Digest"
-    },
-    {
-      title: "Label Awards Special Edition 2023",
-      date: "January 15, 2024",
-      description: "A comprehensive look at the winners and groundbreaking submissions from the 2023 Label Awards & Competition.",
-      fileSize: "4.8 MB",
-      category: "Special Edition"
-    },
-    {
-      title: "Quarterly Technical Report Q4",
-      date: "December 20, 2023",
-      description: "Detailed analysis of global supply chain trends and their impact on the Indian label printing industry.",
-      fileSize: "3.1 MB",
-      category: "Technical Report"
-    },
-    {
-      title: "LMAI Monthly Digest - November 2023",
-      date: "November 1, 2023",
-      description: "Updates on the FINAT collaboration summit and sustainable packaging forum insights.",
-      fileSize: "2.2 MB",
-      category: "Monthly Digest"
-    },
-    {
-      title: "Secretariat Update: Export Regulations",
-      date: "September 12, 2023",
-      description: "Crucial updates regarding international quality standards and export regulations for Indian label manufacturers.",
-      fileSize: "1.8 MB",
-      category: "Policy Update"
-    },
-    {
-      title: "Technical Workshop Summary: UV Curing",
-      date: "August 5, 2023",
-      description: "Key takeaways and technical documentation from our recent hand-on workshop on UV curing technologies.",
-      fileSize: "5.2 MB",
-      category: "Workshop Summary"
-    }
-  ];
+  const [newsletters, setNewsletters] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/dashboard/newsletters')
+      .then(res => res.json())
+      .then(data => {
+        setNewsletters(data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch newsletters", err);
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="w-full min-h-screen bg-background flex flex-col items-center justify-center space-y-4">
+        <Loader2 className="w-12 h-12 animate-spin text-primary" />
+        <p className="text-sm font-black uppercase tracking-widest text-foreground/40">Loading Publications...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full bg-background selection:bg-primary selection:text-white">
@@ -95,51 +76,63 @@ export default function Newsletters() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
-            {newsletters.map((item, idx) => (
-              <div key={idx} className="group relative flex flex-col sm:flex-row gap-8 items-start p-2 hover:bg-secondary/10 rounded-3xl transition-colors duration-500">
-                {/* Visual Placeholder for Document */}
-                <div className="relative w-full sm:w-48 aspect-[3/4] shrink-0 overflow-hidden rounded-2xl bg-[#0a0a0b] flex flex-col items-center justify-center group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] transition-all duration-500">
-                  <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
-                  <FileText className="w-16 h-16 text-white/20 group-hover:text-primary transition-colors duration-500" />
-                  <div className="absolute bottom-4 text-white/40 text-[10px] font-black uppercase tracking-widest">PDF DOCUMENT</div>
+          {newsletters.length === 0 ? (
+            <div className="text-center py-24 bg-secondary/20 rounded-[3rem]">
+              <p className="text-foreground/40 font-black uppercase tracking-[0.2em]">No publications available at the moment.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+              {newsletters.map((item, idx) => (
+                <div key={item._id || idx} className="group relative flex flex-col sm:flex-row gap-8 items-start p-2 hover:bg-secondary/10 rounded-3xl transition-colors duration-500">
+                  {/* Visual Placeholder for Document */}
+                  <div className="relative w-full sm:w-48 aspect-[3/4] shrink-0 overflow-hidden rounded-2xl bg-[#0a0a0b] flex flex-col items-center justify-center group-hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.3)] transition-all duration-500">
+                    <div className="absolute top-0 left-0 w-full h-2 bg-primary" />
+                    {item.image ? (
+                      <Image src={item.image} alt={item.title} fill className="object-cover opacity-50 group-hover:opacity-80 transition-opacity" />
+                    ) : (
+                      <FileText className="w-16 h-16 text-white/20 group-hover:text-primary transition-colors duration-500" />
+                    )}
+                    <div className="absolute bottom-4 text-white/80 text-[10px] font-black uppercase tracking-widest bg-black/50 px-3 py-1 rounded-full backdrop-blur-sm">PDF DOCUMENT</div>
 
-                  {/* Abstract Visual Lines */}
-                  <div className="absolute top-20 left-6 right-6 h-1 bg-white/5" />
-                  <div className="absolute top-24 left-6 right-12 h-1 bg-white/5" />
-                  <div className="absolute top-28 left-6 right-8 h-1 bg-white/5" />
-                </div>
+                    {/* Abstract Visual Lines */}
+                    <div className="absolute top-20 left-6 right-6 h-1 bg-white/5" />
+                    <div className="absolute top-24 left-6 right-12 h-1 bg-white/5" />
+                    <div className="absolute top-28 left-6 right-8 h-1 bg-white/5" />
+                  </div>
 
-                <div className="flex-1 flex flex-col h-full justify-between py-2">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <span className="text-[10px] font-black uppercase tracking-widest bg-primary/10 text-primary px-3 py-1 rounded-full">
-                        {item.category}
-                      </span>
-                      <span className="text-[10px] font-bold text-foreground/30 flex items-center gap-1">
-                        <Calendar className="w-3 h-3" /> {item.date}
+                  <div className="flex-1 flex flex-col h-full justify-between py-2">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3">
+                        <span className="text-[10px] font-black uppercase tracking-widest bg-primary/10 text-primary px-3 py-1 rounded-full">
+                          {item.category}
+                        </span>
+                        <span className="text-[10px] font-bold text-foreground/30 flex items-center gap-1">
+                          <Calendar className="w-3 h-3" /> {item.date}
+                        </span>
+                      </div>
+                      <h3 className="text-2xl font-black uppercase tracking-tighter leading-tight group-hover:text-primary transition-colors">
+                        {item.title}
+                      </h3>
+                      <p className="text-sm font-medium text-foreground/50 line-clamp-2 leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-8 flex items-center gap-6">
+                      <a href={item.file} target="_blank" rel="noopener noreferrer">
+                        <Button className="rounded-full bg-[#0a0a0b] hover:bg-primary text-white font-black uppercase text-[10px] tracking-[0.2em] h-12 px-8 flex items-center gap-2 transition-all duration-500 group-hover:translate-x-1 shadow-lg shadow-black/10">
+                          <Download className="w-3 h-3" /> Download PDF
+                        </Button>
+                      </a>
+                      <span className="text-[10px] font-black text-foreground/30 uppercase tracking-widest">
+                        {item.fileSize || 'PDF'}
                       </span>
                     </div>
-                    <h3 className="text-2xl font-black uppercase tracking-tighter leading-tight group-hover:text-primary transition-colors">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm font-medium text-foreground/50 line-clamp-2 leading-relaxed">
-                      {item.description}
-                    </p>
-                  </div>
-
-                  <div className="pt-8 flex items-center gap-6">
-                    <Button className="rounded-full bg-[#0a0a0b] hover:bg-primary text-white font-black uppercase text-[10px] tracking-[0.2em] h-12 px-8 flex items-center gap-2 transition-all duration-500 group-hover:translate-x-1 shadow-lg shadow-black/10">
-                      <Download className="w-3 h-3" /> Download PDF
-                    </Button>
-                    <span className="text-[10px] font-black text-foreground/30 uppercase tracking-widest">
-                      {item.fileSize}
-                    </span>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

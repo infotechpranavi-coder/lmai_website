@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import HeroCarousel from '@/components/HeroCarousel';
@@ -16,9 +19,41 @@ import {
   CheckCircle2,
   ChevronRight,
   Play,
+  Calendar,
+  Loader2
 } from 'lucide-react';
 
 export default function Home() {
+  const [featuredEvents, setFeaturedEvents] = useState<any[]>([]);
+  const [awardsCount, setAwardsCount] = useState(0);
+  const [eventsCount, setEventsCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [eventsRes, awardsRes] = await Promise.all([
+          fetch('/api/dashboard/events'),
+          fetch('/api/dashboard/awards')
+        ]);
+
+        const eventsData = await eventsRes.json();
+        const awardsData = await awardsRes.json();
+
+        // Take latest 3 upcoming events for homepage
+        const upcoming = eventsData.filter((e: any) => e.type === 'upcoming').slice(0, 3);
+        setFeaturedEvents(upcoming);
+        setEventsCount(eventsData.length);
+        setAwardsCount(awardsData.length);
+        setIsLoading(false);
+      } catch (err) {
+        console.error("Failed to fetch homepage data", err);
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="w-full bg-background overflow-x-hidden">
 
@@ -40,12 +75,12 @@ export default function Home() {
             <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/20 gap-0">
               {[
                 { stat: '1,000+', label: 'Active Members', icon: Users },
-                { stat: '50+', label: 'Annual Events', icon: Zap },
-                { stat: '25+', label: 'Years of Excellence', icon: Award },
+                { stat: `${eventsCount}+`, label: 'Total Events', icon: Zap },
+                { stat: `${awardsCount}+`, label: 'Awards Won', icon: Award },
               ].map(({ stat, label, icon: Icon }, idx) => (
                 <div key={idx} className="flex flex-col items-center justify-center py-4 sm:py-0 sm:px-12 text-center gap-2">
                   <Icon className="w-8 h-8 text-white/70 mb-1" />
-                  <div className="text-4xl md:text-5xl font-bold text-white">{stat}</div>
+                  <div className="text-4xl md:text-5xl font-bold text-white">{isLoading ? '...' : stat}</div>
                   <p className="text-primary-foreground/80 text-base font-medium">{label}</p>
                 </div>
               ))}
@@ -170,12 +205,13 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ──────────────────────────────────────────────────────────
+          FEATURED EVENTS SECTION
+      ────────────────────────────────────────────────────────── */}
       <section className="px-4 sm:px-6 lg:px-8 py-32 bg-secondary/5 relative overflow-hidden">
-        {/* Subtle background element */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
         <div className="max-w-7xl mx-auto relative">
-          {/* Section header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div className="space-y-3">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest">
@@ -189,109 +225,101 @@ export default function Home() {
                 Elevate your professional journey by attending our curated selection of high-impact gatherings and networking power-sessions.
               </p>
             </div>
-            <Button variant="ghost" className="group self-start md:self-auto rounded-full text-primary font-bold hover:bg-primary/10 px-6">
-              View All Events <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            <Link href="/events">
+              <Button variant="ghost" className="group self-start md:self-auto rounded-full text-primary font-bold hover:bg-primary/10 px-6">
+                View All Events <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
-            {/* Main Highlight Event (8 columns) */}
-            <div className="md:col-span-8 group relative overflow-hidden rounded-[2.5rem] bg-card border border-border hover:border-primary/30 transition-all duration-500 shadow-xl shadow-primary/5 hover:shadow-primary/20">
-              <div className="grid grid-cols-1 lg:grid-cols-2 h-full min-h-[450px]">
-                {/* Image Side */}
-                <div className="relative overflow-hidden h-64 lg:h-auto">
-                  <Image
-                    src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80"
-                    alt="Annual Conference"
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent" />
-                  {/* Floating Date Chip */}
-                  <div className="absolute top-6 left-6 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-4 text-center shadow-2xl min-w-[70px]">
-                    <p className="text-xs font-bold text-white uppercase tracking-tighter">Mar</p>
-                    <p className="text-3xl font-black text-white leading-none">15</p>
-                  </div>
-                </div>
-
-                {/* Content Side */}
-                <div className="p-10 flex flex-col justify-between">
-                  <div>
-                    <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-6 inline-block">
-                      Signature Event
-                    </span>
-                    <h3 className="text-3xl md:text-4xl font-black text-foreground mb-4 group-hover:text-primary transition-colors leading-tight">
-                      Annual Conference & Leadership Summit 2024
-                    </h3>
-                    <p className="text-foreground/60 leading-relaxed mb-8">
-                      The flagship gathering for industry pioneers. Experience three days of intensive networking, breakout sessions, and visionary keynotes in the heart of Mumbai.
-                    </p>
-
-                    <div className="flex flex-wrap gap-4 mb-8">
-                      <div className="flex items-center gap-2 text-sm text-foreground/50 bg-secondary/50 px-3 py-1.5 rounded-xl border border-border">
-                        <Users className="w-4 h-4 text-primary" />
-                        <span>500+ Expected</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-sm text-foreground/50 bg-secondary/50 px-3 py-1.5 rounded-xl border border-border">
-                        <Globe className="w-4 h-4 text-primary" />
-                        <span>Mumbai Grand Ballroom</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <Button className="w-full lg:w-max px-8 py-6 rounded-2xl bg-primary text-primary-foreground font-bold hover:shadow-lg hover:shadow-primary/30 transition-all hover:-translate-y-1">
-                    Reserve Your Spot
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            {/* Side Events (4 columns) */}
-            <div className="md:col-span-4 flex flex-col gap-8">
-              {[
-                {
-                  title: 'Innovation Workshop',
-                  time: '10:00 AM - 4:00 PM',
-                  date: 'Apr 03',
-                  img: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=600&q=80',
-                  color: 'primary'
-                },
-                {
-                  title: 'Networking Night',
-                  time: '6:30 PM Onwards',
-                  date: 'Apr 18',
-                  img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&q=80',
-                  color: 'accent'
-                }
-              ].map((event, i) => (
-                <div key={i} className="flex-1 group relative overflow-hidden rounded-[2rem] border border-border bg-card hover:border-primary/30 transition-all duration-500 shadow-lg shadow-primary/5 hover:-translate-y-1">
-                  <div className="relative h-44 overflow-hidden">
+          {!isLoading && featuredEvents.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-stretch">
+              <div className="md:col-span-8 group relative overflow-hidden rounded-[2.5rem] bg-card border border-border hover:border-primary/30 transition-all duration-500 shadow-xl shadow-primary/5 hover:shadow-primary/20">
+                <div className="grid grid-cols-1 lg:grid-cols-2 h-full min-h-[450px]">
+                  <div className="relative overflow-hidden h-64 lg:h-auto">
                     <Image
-                      src={event.img}
-                      alt={event.title}
+                      src={featuredEvents[0].coverImage || "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1200&q=80"}
+                      alt={featuredEvents[0].title}
                       fill
                       className="object-cover group-hover:scale-110 transition-transform duration-700"
                     />
-                    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
-                    <div className="absolute top-4 right-4 backdrop-blur-sm bg-white/20 border border-white/30 rounded-xl px-2.5 py-1 text-center">
-                      <p className="text-[10px] font-bold text-white uppercase">{event.date.split(' ')[0]}</p>
-                      <p className="text-xl font-black text-white leading-none">{event.date.split(' ')[1]}</p>
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-transparent" />
+                    <div className="absolute top-6 left-6 backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl p-4 text-center shadow-2xl min-w-[70px]">
+                      <p className="text-xs font-bold text-white uppercase tracking-tighter">Event</p>
+                      <p className="text-2xl font-black text-white leading-none whitespace-nowrap">{featuredEvents[0].date.split(',')[0].slice(0, 3)}</p>
                     </div>
                   </div>
-                  <div className="p-6">
-                    <h4 className="text-xl font-black text-foreground mb-2 group-hover:text-primary transition-colors">{event.title}</h4>
-                    <p className="text-sm text-foreground/50 flex items-center gap-2 mb-4">
-                      <Zap className="w-3 h-3 text-primary" />
-                      {event.time}
-                    </p>
-                    <span className="text-primary text-sm font-bold inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                      Details <ArrowRight className="w-4 h-4" />
-                    </span>
+
+                  <div className="p-10 flex flex-col justify-between">
+                    <div>
+                      <span className="px-3 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full mb-6 inline-block">
+                        {featuredEvents[0].category || 'Featured'}
+                      </span>
+                      <h3 className="text-2xl md:text-3xl font-black text-foreground mb-4 group-hover:text-primary transition-colors leading-tight">
+                        {featuredEvents[0].title}
+                      </h3>
+                      <p className="text-foreground/60 leading-relaxed mb-8 line-clamp-3">
+                        {featuredEvents[0].description}
+                      </p>
+
+                      <div className="flex flex-wrap gap-4 mb-8">
+                        <div className="flex items-center gap-2 text-sm text-foreground/50 bg-secondary/50 px-3 py-1.5 rounded-xl border border-border">
+                          <Calendar className="w-4 h-4 text-primary" />
+                          <span>{featuredEvents[0].date}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Link href={`/events/${featuredEvents[0]._id}`}>
+                      <Button className="w-full lg:w-max px-8 py-6 rounded-2xl bg-primary text-primary-foreground font-bold hover:shadow-lg hover:shadow-primary/30 transition-all hover:-translate-y-1 uppercase tracking-widest text-[10px]">
+                        Details <ArrowUpRight className="ml-2 w-4 h-4" />
+                      </Button>
+                    </Link>
                   </div>
                 </div>
-              ))}
+              </div>
+
+              <div className="md:col-span-4 flex flex-col gap-8">
+                {featuredEvents.slice(1, 3).map((event, i) => (
+                  <Link key={event._id || i} href={`/events/${event._id}`} className="flex-1 group relative overflow-hidden rounded-[2rem] border border-border bg-card hover:border-primary/30 transition-all duration-500 shadow-lg shadow-primary/5 hover:-translate-y-1">
+                    <div className="relative h-44 overflow-hidden">
+                      <Image
+                        src={event.coverImage || "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=600&q=80"}
+                        alt={event.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors" />
+                    </div>
+                    <div className="p-6">
+                      <h4 className="text-lg font-black text-foreground mb-2 group-hover:text-primary transition-colors line-clamp-1">{event.title}</h4>
+                      <p className="text-xs text-foreground/50 flex items-center gap-2 mb-4">
+                        <Calendar className="w-3 h-3 text-primary" />
+                        {event.date}
+                      </p>
+                      <span className="text-primary text-[10px] font-black uppercase tracking-widest inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                        Details <ArrowRight className="w-4 h-4" />
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+                {featuredEvents.length < 3 && (
+                  <div className="flex-1 rounded-[2rem] border-2 border-dashed border-border flex items-center justify-center p-8 text-center bg-secondary/5">
+                    <p className="text-foreground/30 text-xs font-black uppercase tracking-widest">More events coming soon</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          ) : !isLoading ? (
+            <div className="text-center py-24 bg-secondary/10 rounded-[3rem]">
+              <p className="text-foreground/40 font-black uppercase tracking-[0.2em]">Check back later for upcoming highlights.</p>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-32">
+              <Loader2 className="w-12 h-12 animate-spin text-primary mb-4" />
+              <p className="text-foreground/30 text-xs font-black uppercase tracking-widest">Syncing with Association...</p>
+            </div>
+          )}
         </div>
       </section>
 
@@ -299,7 +327,6 @@ export default function Home() {
           AWARDS & RECOGNITION — vibrant cards
       ═══════════════════════════════════════════════ */}
       <section className="px-4 sm:px-6 lg:px-8 py-24 bg-primary relative overflow-hidden">
-        {/* Decorative blobs */}
         <div className="absolute -top-24 -right-24 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
         <div
@@ -322,7 +349,7 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: Award, title: 'Excellence in Innovation', desc: 'Recognising forward-thinking solutions that push boundaries.', num: '12' },
+              { icon: Award, title: 'Total Awards Hosted', desc: 'Recognising forward-thinking solutions that push boundaries.', num: awardsCount },
               { icon: TrendingUp, title: 'Leadership Excellence', desc: 'Honouring visionary leaders who inspire transformation.', num: '8' },
               { icon: Users, title: 'Community Impact', desc: 'Celebrating collaborative achievements that uplift societies.', num: '20' },
             ].map(({ icon: Icon, title, desc, num }, idx) => (
@@ -333,11 +360,19 @@ export default function Home() {
                 <div className="w-16 h-16 mx-auto mb-5 bg-white/20 rounded-2xl flex items-center justify-center group-hover:bg-white/30 transition-colors group-hover:scale-110 duration-300">
                   <Icon className="w-8 h-8 text-white" />
                 </div>
-                <div className="text-3xl font-black text-white mb-1">{num}+</div>
+                <div className="text-3xl font-black text-white mb-1">{isLoading ? '...' : `${num}+`}</div>
                 <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
                 <p className="text-primary-foreground/70 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
+          </div>
+
+          <div className="mt-16 text-center">
+            <Link href="/awards">
+              <Button className="rounded-full bg-white text-primary hover:bg-black hover:text-white font-black uppercase text-[10px] tracking-widest h-14 px-10 transition-all duration-500">
+                Explore Awards Gallery <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -346,7 +381,6 @@ export default function Home() {
           LEADERSHIP — centered vision layout
       ═══════════════════════════════════════════════ */}
       <section className="px-4 sm:px-6 lg:px-8 py-24 relative overflow-hidden">
-        {/* Tinted background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
         <div
           className="absolute right-0 top-0 w-1/2 h-full opacity-[0.04]"
@@ -358,7 +392,6 @@ export default function Home() {
 
         <div className="max-w-4xl mx-auto relative text-center">
           <div className="space-y-12">
-            {/* Header */}
             <div>
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-black uppercase tracking-widest mb-6">
                 <Users className="w-4 h-4" />
@@ -372,7 +405,6 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Feature Pills / Info bit */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
               {[
                 {
@@ -401,24 +433,40 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Call to Action */}
             <div className="pt-8">
               <Button asChild className="h-16 px-10 rounded-full bg-primary text-primary-foreground font-black text-lg shadow-2xl shadow-primary/30 hover:shadow-primary/50 hover:-translate-y-1 transition-all">
-                <Link href="/leadership">
+                <Link href="/management">
                   Meet the Full Board <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
               </Button>
-              <p className="mt-6 text-sm text-foreground/40 font-medium">
-                Over 25+ board members contributing to our excellence.
+              <p className="mt-6 text-sm text-foreground/40 font-medium uppercase tracking-widest">
+                Professional directors contributing to our excellence.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-
-
-
     </div>
+  );
+}
+
+function ArrowUpRight(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M7 7h10v10" />
+      <path d="M7 17 17 7" />
+    </svg>
   );
 }
